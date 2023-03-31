@@ -1,0 +1,85 @@
+{
+  "name": "afonsa-ai",
+  "version": "1.0.1",
+  "description": "Afonsa ✨ is a chatbot with some useful functions.",
+  "keywords": [
+    "typescript"
+  ],
+  "author": {
+    "name": "Gabriel Maia",
+    "url": "https://github.com/gabrielmaialva33"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gabrielmaialva33/afonsa-ai.git"
+  },
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
+    "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/main.js",
+    "start:build": "rimraf dist && tsc && node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/src/main.js",
+    "start:dev": "nodemon",
+    "start:test": "nodemon --watch './**/*.ts' --exec 'ts-node' bin/test.ts",
+    "test": "ts-node bin/test.ts",
+    "lint": "eslint . --ext=.ts",
+    "format": "prettier --write ."
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:adonis/typescriptApp",
+      "prettier"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "error"
+      ]
+    }
+  },
+  "eslintIgnore": [
+    "build"
+  ],
+  "prettier": {
+    "trailingComma": "es5",
+    "semi": false,
+    "singleQuote": true,
+    "useTabs": false,
+    "quoteProps": "consistent",
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "printWidth": 100
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.3",
+    "@babel/plugin-proposal-decorators": "^7.21.0",
+    "@babel/plugin-transform-typescript": "^7.21.3",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-typescript": "^7.21.0",
+    "@types/node": "^18.15.11",
+    "@typescript-eslint/eslint-plugin": "^5.57.0",
+    "@typescript-eslint/parser": "^5.57.0",
+    "babel-plugin-module-resolver": "^5.0.0",
+    "babel-plugin-transform-typescript-metadata": "^0.3.2",
+    "babel-plugin-tsconfig-paths-module-resolver": "^1.0.4",
+    "eslint": "^8.37.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-adonis": "^2.1.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "nodemon": "^2.0.22",
+    "prettier": "^2.8.7",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.0.3",
+    "yarn-upgrade-all": "^0.7.2"
+  },
+  "dependencies": {
+    "@wppconnect-team/wppconnect": "^1.23.1",
+    "chalk": "4.1.2",
+    "rxjs": "^7.8.0"
+  }
+}
