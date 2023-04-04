@@ -1,5 +1,6 @@
 import { config, createLogger, format, transports } from 'winston'
 import { StringUtils } from '@/core/helpers/string.utils'
+import * as console from 'console'
 
 const Log = createLogger({
   level: 'silly',
@@ -20,10 +21,25 @@ export const Logger = {
 
 export const LogKnex = {
   debug: (message: any) => {
+    if (Array.isArray(message)) {
+      message.forEach((item) => {
+        Logger.debug(StringUtils.FormatQuery(item.sql), 'Knex-Query')
+        Logger.debug(StringUtils.FormatBindings(item.bindings), 'Knex-Bindings')
+      })
+      return
+    }
+
     Logger.debug(StringUtils.FormatQuery(message.sql), 'Knex-Query')
     Logger.debug(StringUtils.FormatBindings(message.bindings), 'Knex-Bindings')
   },
   error: (message: any) => {
+    if (Array.isArray(message)) {
+      message.forEach((item) => {
+        Logger.error(StringUtils.FormatQuery(item.sql), 'Knex-Query')
+        Logger.error(StringUtils.FormatBindings(item.bindings), 'Knex-Bindings')
+      })
+      return
+    }
     Logger.error(StringUtils.FormatQuery(message.sql), 'Knex-Query')
     Logger.error(StringUtils.FormatBindings(message.bindings), 'Knex-Bindings')
   },

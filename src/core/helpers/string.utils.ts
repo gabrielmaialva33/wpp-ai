@@ -1,10 +1,14 @@
 export const StringUtils = {
   FormatQuery: (str: string) => {
+    if (str === undefined) return ''
+
     const regex = /(\r\n|\n|\r)/gm
     return str.replace(regex, ' ').replace(/\s+/g, ' ')
   },
 
   FormatBindings: (bindings: any[]) => {
+    if (bindings === undefined) return ''
+
     const regex = /(\r\n|\n|\r)/gm
     const str = bindings
       .map((item) => {

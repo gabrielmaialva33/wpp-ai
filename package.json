@@ -24,7 +24,11 @@
     "start:test": "nodemon --watch './**/*.ts' --exec 'ts-node' bin/test.ts",
     "test": "ts-node bin/test.ts",
     "lint": "eslint . --ext=.ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "db:up": "ts-node -r tsconfig-paths/register ./node_modules/.bin/knex --knexfile ./knexfile.ts migrate:latest",
+    "db:down": "ts-node -r tsconfig-paths/register ./node_modules/.bin/knex --knexfile ./knexfile.ts migrate:down",
+    "db:seed": "ts-node -r tsconfig-paths/register ./node_modules/.bin/knex --knexfile ./knexfile.ts seed:run",
+    "db:reset": "ts-node -r tsconfig-paths/register ./node_modules/.bin/knex --knexfile ./knexfile.ts migrate:rollback --all && ts-node -r tsconfig-paths/register ./node_modules/.bin/knex --knexfile ./knexfile.ts migrate:latest"
   },
   "eslintConfig": {
     "extends": [
