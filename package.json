@@ -37,7 +37,8 @@
     "rules": {
       "prettier/prettier": [
         "error"
-      ]
+      ],
+      "@typescript-eslint/explicit-member-accessibility": "off"
     }
   },
   "eslintIgnore": [
@@ -55,14 +56,15 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.21.0",
-    "@babel/core": "^7.21.3",
+    "@babel/core": "^7.21.4",
     "@babel/plugin-proposal-decorators": "^7.21.0",
     "@babel/plugin-transform-typescript": "^7.21.3",
-    "@babel/preset-env": "^7.20.2",
-    "@babel/preset-typescript": "^7.21.0",
+    "@babel/preset-env": "^7.21.4",
+    "@babel/preset-typescript": "^7.21.4",
+    "@types/luxon": "^3.2.2",
     "@types/node": "^18.15.11",
-    "@typescript-eslint/eslint-plugin": "^5.57.0",
-    "@typescript-eslint/parser": "^5.57.0",
+    "@typescript-eslint/eslint-plugin": "^5.57.1",
+    "@typescript-eslint/parser": "^5.57.1",
     "babel-plugin-module-resolver": "^5.0.0",
     "babel-plugin-transform-typescript-metadata": "^0.3.2",
     "babel-plugin-tsconfig-paths-module-resolver": "^1.0.4",
@@ -78,8 +80,13 @@
     "yarn-upgrade-all": "^0.7.2"
   },
   "dependencies": {
-    "@wppconnect-team/wppconnect": "^1.23.1",
-    "chalk": "4.1.2",
-    "rxjs": "^7.8.0"
+    "@wppconnect-team/wppconnect": "^1.23.2",
+    "better-sqlite3": "^8.2.0",
+    "dotenv": "^16.0.3",
+    "envalid": "^7.3.1",
+    "knex": "^2.4.2",
+    "luxon": "^3.3.0",
+    "objection": "^3.0.1",
+    "zod": "^3.21.4"
   }
 }
