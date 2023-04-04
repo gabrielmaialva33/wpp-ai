@@ -1,6 +1,6 @@
 import { config, createLogger, format, transports } from 'winston'
+
 import { StringUtils } from '@/core/helpers/string.utils'
-import * as console from 'console'
 
 const Log = createLogger({
   level: 'silly',
@@ -32,6 +32,7 @@ export const LogKnex = {
     Logger.debug(StringUtils.FormatQuery(message.sql), 'Knex-Query')
     Logger.debug(StringUtils.FormatBindings(message.bindings), 'Knex-Bindings')
   },
+
   error: (message: any) => {
     if (Array.isArray(message)) {
       message.forEach((item) => {
