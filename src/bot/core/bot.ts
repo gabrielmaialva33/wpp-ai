@@ -8,8 +8,6 @@ export const Bot = async () =>
   }).then((client) => start(client))
 
 const start = async (client: Whatsapp) => {
-  client.onMessage(async (message) => {
-    const sender = await client.getContact(message.author)
-    console.log(sender)
-  })
+  const contacts = await client.getAllContacts()
+  console.log(contacts)
 }
