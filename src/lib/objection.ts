@@ -7,4 +7,4 @@ const Knex = knex(DatabaseConfig)
 
 Model.knex(Knex)
 
-export { Knex }
+export { Knex as Orm }

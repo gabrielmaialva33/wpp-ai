@@ -65,7 +65,7 @@
     "@babel/plugin-transform-typescript": "^7.21.3",
     "@babel/preset-env": "^7.21.4",
     "@babel/preset-typescript": "^7.21.4",
-    "@types/luxon": "^3.2.2",
+    "@types/luxon": "^3.3.0",
     "@types/node": "^18.15.11",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
     "@typescript-eslint/parser": "^5.57.1",
@@ -88,9 +88,11 @@
     "better-sqlite3": "^8.2.0",
     "dotenv": "^16.0.3",
     "envalid": "^7.3.1",
+    "inversify": "^6.0.1",
     "knex": "^2.4.2",
     "luxon": "^3.3.0",
     "objection": "^3.0.1",
+    "reflect-metadata": "^0.1.13",
     "zod": "^3.21.4"
   }
 }

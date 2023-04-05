@@ -1,5 +1,6 @@
 import { create, Whatsapp } from '@wppconnect-team/wppconnect'
 import * as console from 'console'
+import { ChatMiddleware } from '@/bot/middlewares/chat.middleware'
 
 export const Bot = async () =>
   create({
@@ -8,6 +9,7 @@ export const Bot = async () =>
   }).then((client) => start(client))
 
 const start = async (client: Whatsapp) => {
-  const contacts = await client.getAllContacts()
-  console.log(contacts)
+  client.onMessage(async (message) => {
+    await Promise.all([ChatMiddleware(client, message)])
+  })
 }

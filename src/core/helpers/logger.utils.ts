@@ -12,7 +12,7 @@ const Log = createLogger({
 export const Logger = {
   info: (message: string, context: string) => Log.info(message, context),
 
-  error: (message: string, context: string) => Log.error(message, context),
+  error: (message: any, context: string) => Log.error(message, context),
 
   warn: (message: string, context: string) => Log.warn(message, context),
 
