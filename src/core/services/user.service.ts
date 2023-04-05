@@ -16,4 +16,8 @@ export class UserService {
   async create(payload: DTO.Create): Promise<UserModel> {
     return this._userRepository.create(payload)
   }
+
+  async createOrUpdate(search: DTO.Create, payload: DTO.Create): Promise<UserModel> {
+    return this._userRepository.createOrUpdate(search, payload)
+  }
 }
