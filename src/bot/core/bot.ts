@@ -1,5 +1,4 @@
 import { create, Whatsapp } from '@wppconnect-team/wppconnect'
-import * as console from 'console'
 import { ChatMiddleware } from '@/bot/middlewares/chat.middleware'
 
 export const Bot = async () =>

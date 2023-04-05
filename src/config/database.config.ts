@@ -1,6 +1,6 @@
 import { Knex } from 'knex'
 
-import { LogKnex } from '@/core/helpers/logger.utils'
+import { LogKnex } from '@/helpers/logger.utils'
 import { Env } from '@/config/env'
 
 export const DatabaseConfig: Knex.Config<Knex.Sqlite3ConnectionConfig> = {

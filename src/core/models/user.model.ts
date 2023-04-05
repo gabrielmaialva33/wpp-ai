@@ -1,6 +1,8 @@
-import { BaseModel } from '@/core/models/base.model'
 import { Contact } from '@wppconnect-team/wppconnect'
+
+import { BaseModel } from '@/core/models/base.model'
 import { UserInterface } from '@/core/interfaces/user.interface'
+import { StringUtils } from '@/helpers/string.utils'
 
 export class UserModel extends BaseModel {
   static tableName = 'users'
@@ -12,9 +14,10 @@ export class UserModel extends BaseModel {
    */
   name!: string
   username!: string
-  wac_id?: string
+  wac_id!: string
   wag_id?: string
   wa_user?: string
+  profile_pic?: Buffer
 
   /**
    * ------------------------------------------------------
@@ -28,12 +31,13 @@ export class UserModel extends BaseModel {
    * ------------------------------------------------------
    */
   static sign(contact: Contact): UserInterface.Entity {
+    const name = contact.pushname ?? contact.shortName ?? contact.name ?? contact.formattedName
     return {
-      name: contact.name ?? contact.shortName ?? contact.pushname ?? contact.formattedName,
-      username: contact.id.user,
-      wac_id: contact.id._serialized,
-      wag_id: contact.id._serialized,
-      wa_user: contact.id._serialized.split('@')[0],
+      name,
+      username: StringUtils.Slugify(name),
+      wac_id: contact.id.user + '@c.us',
+      wag_id: contact.id.user + '@g.us',
+      wa_user: contact.id.user,
     }
   }
 

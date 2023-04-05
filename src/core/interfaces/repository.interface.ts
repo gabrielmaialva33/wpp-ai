@@ -1,4 +1,4 @@
-import { Model, ModelClass } from 'objection'
+import { Model } from 'objection'
 
 export interface RepositoryInterface<M extends Model> {
   /**
@@ -40,7 +40,7 @@ export interface RepositoryInterface<M extends Model> {
    * @example
    * const user = await this.userRepository.createOrUpdate({ name: 'John Doe' }, { name: 'John Doe' })
    */
-  createOrUpdate(search: ModelAttributes<M>, payload: ModelAttributes<M>): Promise<M>
+  createOrUpdate(search: Partial<ModelAttributes<M>>, payload: ModelAttributes<M>): Promise<M>
 }
 
 export type ModelAttributes<M extends Model> = { [P in keyof M]?: M[P] }

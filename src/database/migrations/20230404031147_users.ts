@@ -8,7 +8,7 @@ export async function up(knex: Knex): Promise<void> {
 
     table.string('name', 40).notNullable()
     table.string('username', 20).notNullable().unique()
-    table.string('wac_id', 20).unique()
+    table.string('wac_id', 20).notNullable().unique()
     table.string('wag_id', 20).unique()
     table.string('wa_user', 40)
 

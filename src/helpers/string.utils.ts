@@ -7,7 +7,7 @@ export const StringUtils = {
   },
 
   FormatBindings: (bindings: any[]) => {
-    if (bindings === undefined) return ''
+    if (bindings === undefined) return '[]'
 
     const regex = /(\r\n|\n|\r)/gm
     const str = bindings
@@ -26,5 +26,22 @@ export const StringUtils = {
     if (str === 'null') return false
     if (str === '') return false
     return str.trim() !== ''
+  },
+
+  Slugify: (name: string) => {
+    if (!name) return 'no_username'
+
+    const username = name
+      .normalize('NFKC')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, ' ')
+      .replace(/(\r\n|\n|\r)/gm, '')
+      .replace(/[^a-zA-Z0-9_-]/g, '_')
+      .slice(0, 20)
+      .toLowerCase()
+      .trim()
+
+    if (username === '') return 'no_username'
+    return username
   },
 }

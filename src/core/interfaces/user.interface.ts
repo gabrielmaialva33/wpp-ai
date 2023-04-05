@@ -21,5 +21,7 @@ export namespace UserInterface {
       wag_id?: string
       wa_user?: string
     }
+
+    export interface Update extends Partial<Create> {}
   }
 }

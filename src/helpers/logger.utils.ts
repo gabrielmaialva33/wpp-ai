@@ -1,6 +1,6 @@
 import { config, createLogger, format, transports } from 'winston'
 
-import { StringUtils } from '@/core/helpers/string.utils'
+import { StringUtils } from '@/helpers/string.utils'
 
 const Log = createLogger({
   level: 'silly',

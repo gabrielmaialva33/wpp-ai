@@ -1,7 +1,7 @@
 import { Model } from 'objection'
 
 import { ModelAttributes, RepositoryInterface } from '@/core/interfaces/repository.interface'
-import { Logger } from '@/core/helpers/logger.utils'
+import { Logger } from '@/helpers/logger.utils'
 import { injectable, unmanaged } from 'inversify'
 import console from 'console'
 
@@ -48,7 +48,7 @@ export class BaseRepository<M extends Model> implements RepositoryInterface<M> {
     }
   }
 
-  createOrUpdate(search: ModelAttributes<M>, payload: ModelAttributes<M>): Promise<M> {
+  createOrUpdate(search: Partial<ModelAttributes<M>>, payload: ModelAttributes<M>): Promise<M> {
     try {
       return this.model.transaction<M>(async (trx) => {
         const model = await this.model.query(trx).findOne(search)
