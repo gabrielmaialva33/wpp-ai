@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <img src="https://raw.githubusercontent.com/gabrielmaialva33/wpp-ai/master/.github/assets/ai.png" alt="AI" width="200">
+  <img src="https://raw.githubusercontent.com/gabrielmaialva33/wpp-ai/main/.github/assets/ai.png" alt="AI" width="200">
   <br>
   Another chatbot for <a href="https://www.whatsapp.com/?lang=pt_BR">WhatsApp</a>
   <br>
