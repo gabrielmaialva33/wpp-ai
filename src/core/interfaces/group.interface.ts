@@ -1,16 +1,13 @@
+import { GroupModel } from '@/core/models/group.model'
 import { RepositoryInterface } from '@/core/interfaces/repository.interface'
-import { UserModel } from '@/core/models/user.model'
 
-export namespace UserInterface {
-  export interface Repository extends RepositoryInterface<UserModel> {}
+export namespace GroupInterface {
+  export interface Repository extends RepositoryInterface<GroupModel> {}
 
   export interface Entity {
     id?: number
     name: string
-    username: string
-    wac_id?: string
-    wag_id?: string
-    wa_user?: string
+    wpp_id: string
   }
 
   export namespace DTO {
