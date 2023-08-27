@@ -1,22 +1,22 @@
 <h1 align="center">
   <br>
-  <img src="https://raw.githubusercontent.com/gabrielmaialva33/node-ts-app-template/master/.github/assets/icon.png" alt="TypeScript" width="200">
+  <img src="https://raw.githubusercontent.com/gabrielmaialva33/wpp-ai/master/.github/assets/ai.png" alt="AI" width="200">
   <br>
-  A template for <a href="https://nodejs.org/en/">Node.js</a>
+  Another chatbot for <a href="https://www.whatsapp.com/?lang=pt_BR">WhatsApp</a>
   <br>
 </h1>
 
 <p align="center">
-  <strong>A complete Node.js project template using TypeScript </strong>
+  <strong>A complete chatbot for WhatsApp using Node.js, Typescript and following general best practices.</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/github/license/gabrielmaialva33/node-ts-app-template?color=00b8d3?style=flat&logo=appveyor" alt="License" />
-  <img src="https://img.shields.io/github/languages/top/gabrielmaialva33/node-ts-app-template?style=flat&logo=appveyor" alt="GitHub top language" >
-  <img src="https://img.shields.io/github/languages/count/gabrielmaialva33/node-ts-app-template?style=flat&logo=appveyor" alt="GitHub language count" >
-  <img src="https://img.shields.io/github/repo-size/gabrielmaialva33/node-ts-app-template?style=flat&logo=appveyor" alt="Repository size" >
-  <a href="https://github.com/gabrielmaialva33/node-ts-app-template/commits/master">
-    <img src="https://img.shields.io/github/last-commit/gabrielmaialva33/node-ts-app-template?style=flat&logo=appveyor" alt="GitHub last commit" >
+  <img src="https://img.shields.io/github/license/gabrielmaialva33/wpp-ai?color=00b8d3?style=flat&logo=appveyor" alt="License" />
+  <img src="https://img.shields.io/github/languages/top/gabrielmaialva33/wpp-ai?style=flat&logo=appveyor" alt="GitHub top language" >
+  <img src="https://img.shields.io/github/languages/count/gabrielmaialva33/wpp-ai?style=flat&logo=appveyor" alt="GitHub language count" >
+  <img src="https://img.shields.io/github/repo-size/gabrielmaialva33/wpp-ai?style=flat&logo=appveyor" alt="Repository size" >
+  <a href="https://github.com/gabrielmaialva33/wpp-ai/commits/master">
+    <img src="https://img.shields.io/github/last-commit/gabrielmaialva33/wpp-ai?style=flat&logo=appveyor" alt="GitHub last commit" >
     <img src="https://img.shields.io/badge/made%20by-Maia-15c3d6?style=flat&logo=appveyor" alt="Maia" >  
   </a>
 </p>
@@ -35,7 +35,7 @@
 
 ## :bookmark: About
 
-**Node Typescript App** A complete Node.js project template using TypeScript and following general best practices.
+**Wpp AI** is a complete chatbot for WhatsApp using Node.js, Typescript and following general best practices.
 
 <br>
 
@@ -70,7 +70,7 @@ The following software must be installed:
 ### :arrow_down: **Cloning the repository**
 
 ```sh
-  $ git clone https://github.com/gabrielmaialva33/node-ts-app-template.git
+  $ git clone https://github.com/gabrielmaialva33/wpp-ai.git
 ```
 
 <br>
@@ -80,7 +80,7 @@ The following software must be installed:
 - :package: API
 
 ```sh
-  $ cd node-ts-app-template
+  $ cd wpp-ai
   # Dependencies install.
   $ yarn # or npm install
   # start
