@@ -3,7 +3,7 @@ import { ChatMiddleware } from '@/bot/middlewares/chat.middleware'
 
 export const Bot = async () =>
   create({
-    session: 'afonsa_ai',
+    session: 'wpp_ai',
     disableWelcome: true,
   }).then((client) => start(client))
 
