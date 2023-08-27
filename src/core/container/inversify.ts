@@ -1,7 +1,7 @@
 import { Container } from 'inversify'
 
 import { TYPES } from './types'
-import { UserRepository, GroupRepository } from '@/core/repositories'
+import { GroupRepository, UserRepository } from '@/core/repositories'
 
 const container = new Container()
 

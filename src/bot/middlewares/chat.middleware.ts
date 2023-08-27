@@ -1,5 +1,4 @@
 import { Message, Whatsapp } from '@wppconnect-team/wppconnect'
-import console from 'console'
 import { WhatsappUtils } from '@/helpers/whatsapp.utils'
 import { container } from '@/core/container'
 import { UserService } from '@/core/services/user.service'

@@ -1,7 +1,6 @@
 import { Message, Whatsapp } from '@wppconnect-team/wppconnect'
 
 import { UserModel } from '@/core/models/user.model'
-import console from 'console'
 import { GroupModel } from '@/core/models/group.model'
 
 export const WhatsappUtils = {
