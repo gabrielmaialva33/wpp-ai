@@ -1,21 +1,17 @@
-import { RepositoryInterface } from '@/core/interfaces/repository.interface'
+import { RepositoryInterface } from '../interfaces/repository.interface'
 import { UserModel } from '@/core/models/user.model'
 
-export namespace UserInterface {
-  export interface Repository extends RepositoryInterface<UserModel> {}
+export interface UserRepositoryInterface extends RepositoryInterface<UserModel> {}
 
-  export interface Entity {
-    id?: number
-    name: string
-    username: string
-    wac_id?: string
-    wag_id?: string
-    wa_user?: string
-  }
+export interface UserCreate extends Omit<UserEntity, 'id'> {}
 
-  export namespace DTO {
-    export interface Create extends Omit<Entity, 'id'> {}
+export interface UserUpdate extends Partial<UserCreate> {}
 
-    export interface Update extends Partial<Create> {}
-  }
+export interface UserEntity {
+  id?: number
+  name: string
+  username: string
+  wac_id?: string
+  wag_id?: string
+  wa_user?: string
 }
