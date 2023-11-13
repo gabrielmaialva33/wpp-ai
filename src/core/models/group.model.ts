@@ -1,6 +1,5 @@
 import { BaseModel } from '@/core/models/base.model'
 import { Contact } from '@wppconnect-team/wppconnect'
-import { GroupEntity } from '@/core/interfaces/group.interface'
 
 export class GroupModel extends BaseModel {
   static tableName = 'groups'
@@ -24,7 +23,7 @@ export class GroupModel extends BaseModel {
    * Methods
    * ------------------------------------------------------
    */
-  static sign(group: Contact): GroupEntity {
+  static sign(group: Contact) {
     const name = group.name ?? group.shortName ?? group.name ?? group.formattedName
     return {
       name: name,

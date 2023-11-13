@@ -1,7 +1,6 @@
 import { Contact } from '@wppconnect-team/wppconnect'
 
 import { BaseModel } from '@/core/models/base.model'
-import { UserEntity } from '@/core/interfaces/user.interface'
 import { StringUtils } from '@/helpers/string.utils'
 
 export class UserModel extends BaseModel {
@@ -30,7 +29,7 @@ export class UserModel extends BaseModel {
    * Methods
    * ------------------------------------------------------
    */
-  static sign(contact: Contact): UserEntity {
+  static sign(contact: Contact) {
     const name = contact.pushname ?? contact.shortName ?? contact.name ?? contact.formattedName
     return {
       name,
