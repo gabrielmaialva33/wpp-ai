@@ -15,7 +15,7 @@
     "url": "https://github.com/gabrielmaialva33/node-ts-app.git"
   },
   "engines": {
-    "node": ">=20.15.1"
+    "node": ">=20.14.0"
   },
   "private": true,
   "main": "build/index.js",
@@ -55,7 +55,6 @@
     "@wppconnect-team/wppconnect": "^1.32.3",
     "dotenv": "^16.4.5",
     "envalid": "^8.0.0",
-    "logform": "^2.6.0",
     "reflect-metadata": "^0.2.2",
     "source-map-support": "^0.5.21",
     "winston": "^3.13.0"

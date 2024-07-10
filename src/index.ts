@@ -5,7 +5,7 @@ const main = async () => {
   try {
     await Bot().then(() => logger.info('bot started'))
   } catch (error) {
-    console.error(error)
+    console.log(error)
   }
 }
 

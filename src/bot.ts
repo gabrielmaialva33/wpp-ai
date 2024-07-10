@@ -61,7 +61,9 @@ export const Bot = async () => {
   create({
     session: SESSION_NAME,
     disableWelcome: true,
-  }).then((client) => start(client))
+  })
+    .then((client) => start(client))
+    .catch((e) => logger.error(e))
 }
 
 const start = async (client: Whatsapp) => {
@@ -83,7 +85,9 @@ const start = async (client: Whatsapp) => {
     if (!message.body) return
 
     // execute middlewares
-    await Promise.all([...middlewares.values()].map((middleware) => middleware(client, message)))
+    await Promise.all(
+      [...middlewares.values()].map((middleware) => middleware(client, message))
+    ).catch((e) => logger.error(e))
 
     if (PREFIXES.some((prefix) => message.body!.startsWith(prefix))) {
       const command = message.body!.toLowerCase().trim().slice(1).split(' ')[0]
