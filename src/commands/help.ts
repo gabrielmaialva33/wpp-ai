@@ -13,6 +13,6 @@ export const help = {
       response += `\`${command.name}\`: \`\`\`${command.description}\`\`\`\n\n`
     })
 
-    await client.sendText(message.from, response)
+    await client.sendText(message.from, response, { quotedMsg: message.id })
   },
 }

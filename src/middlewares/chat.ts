@@ -10,5 +10,5 @@ export const execute = async (client: Whatsapp, message: Message) => {
   const from = message.from
 
   // send a reply to the user
-  await client.sendText(from, `from: ${from}`, { quoted: message })
+  await client.sendText(from, `reading your message...`)
 }

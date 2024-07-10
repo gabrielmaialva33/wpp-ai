@@ -4,6 +4,6 @@ export const ping = {
   name: 'ping',
   description: 'veja se o bot está online',
   execute: async (client: Whatsapp, message: Message) => {
-    await client.sendText(message.from, `Pong! 🏓`, { quoted: message })
+    await client.sendText(message.from, `Pong! 🏓`, { quotedMsg: message.id })
   },
 }
