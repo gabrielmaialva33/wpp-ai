@@ -11,7 +11,10 @@ export const PREFIXES = ['!', '/', '#', '$']
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
-const commands = new Map<string, (client: Whatsapp, message: any) => Promise<void>>()
+const commands = new Map<
+  string,
+  { execute: (client: Whatsapp, message: any) => Promise<void>; description: string }
+>()
 const middlewares = new Map<string, (client: Whatsapp, message: any) => Promise<void>>()
 
 const resolvePath = (file: string) => {
@@ -29,7 +32,10 @@ const loadCommands = async () => {
     const commandModule = await import(`${commandsPath}/${file}`)
     const commandName = file.split('.')[0]
     if (commandModule[commandName] && commandModule[commandName].name) {
-      commands.set(commandModule[commandName].name, commandModule[commandName].execute)
+      commands.set(commandModule[commandName].name, {
+        execute: commandModule[commandName].execute,
+        description: commandModule[commandName].description,
+      })
     }
   }
 }
@@ -82,10 +88,14 @@ const start = async (client: Whatsapp) => {
     if (PREFIXES.some((prefix) => message.body!.startsWith(prefix))) {
       const command = message.body!.toLowerCase().trim().slice(1).split(' ')[0]
       if (commands.has(command)) {
-        await commands.get(command)!(client, message)
+        await commands.get(command)!.execute(client, message)
       } else {
         await client.sendText(message.from, 'command not found')
       }
     }
   })
+}
+
+export const getCommandsList = () => {
+  return Array.from(commands.entries()).map(([name, { description }]) => ({ name, description }))
 }
