@@ -11,9 +11,9 @@ export type UserContext = {
 
 export type Context = {
   user: UserContext
-  reply_to: UserContext | null
+  replyToUser: UserContext | null
   text: string | null
-  reply_to_text: string | null
+  replyToText: string | null
 }
 
 const getUser = async (client: Whatsapp, message: Message): Promise<UserContext> => {
@@ -62,13 +62,13 @@ const getContext = async (client: Whatsapp, message: Message): Promise<Context> 
 
   return {
     user,
-    reply_to: replyTo,
+    replyToUser: replyTo,
     text: user.message,
-    reply_to_text: replyTo ? replyTo.message : null,
+    replyToText: replyTo ? replyTo.message : null,
   }
 }
 
-export const Context = {
+export const context = {
   getUser,
   getReplyTo,
   getContext,

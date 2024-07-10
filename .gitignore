@@ -1,7 +1,9 @@
 # Dependencies and build
 node_modules
 build
-tmp
+tmp/*
+!tmp/.gitkeep
+
 
 # Secrets
 .env
