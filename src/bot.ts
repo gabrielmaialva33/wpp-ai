@@ -1,38 +1,57 @@
 import * as fs from 'node:fs'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 import { create, SocketState, Whatsapp } from '@wppconnect-team/wppconnect'
 
-import { systemInfo } from './system.js'
 import { logger } from './utils/logger.js'
-import { fileURLToPath } from 'node:url'
 
 export const SESSION_NAME = 'wpp_ai'
 export const PREFIXES = ['!', '/', '#', '$']
 
-const commands = new Map<string, (client: Whatsapp, message: any) => Promise<void>>()
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
-const resolveCommandsPath = () => {
+const commands = new Map<string, (client: Whatsapp, message: any) => Promise<void>>()
+const middlewares = new Map<string, (client: Whatsapp, message: any) => Promise<void>>()
+
+const resolvePath = (file: string) => {
   const isCompiled = dirname.includes('/build/')
-  return isCompiled ? path.resolve(dirname, './commands') : path.resolve(dirname, '../commands')
+  return isCompiled ? path.resolve(dirname, `./${file}`) : path.resolve(dirname, `../${file}`)
 }
 
 const loadCommands = async () => {
-  const commandsPath = resolveCommandsPath()
+  const commandsPath = resolvePath('commands')
   const commandFiles = fs
     .readdirSync(commandsPath)
     .filter((file) => file.endsWith('.js') || file.endsWith('.ts'))
+
   for (const file of commandFiles) {
     const commandModule = await import(`${commandsPath}/${file}`)
     const commandName = file.split('.')[0]
-    commands.set(commandName, commandModule.execute)
+    if (commandModule[commandName] && commandModule[commandName].name) {
+      commands.set(commandModule[commandName].name, commandModule[commandName].execute)
+    }
+  }
+}
+
+const loadMiddlewares = async () => {
+  const middlewaresPath = resolvePath('middlewares')
+  const middlewareFiles = fs
+    .readdirSync(middlewaresPath)
+    .filter((file) => file.endsWith('.js') || file.endsWith('.ts'))
+
+  for (const file of middlewareFiles) {
+    const middlewareModule = await import(`${middlewaresPath}/${file}`)
+    const middlewareName = file.split('.')[0]
+    middlewares.set(middlewareName, middlewareModule.execute)
   }
 }
 
 export const Bot = async () => {
   await loadCommands()
+  await loadMiddlewares()
 
+  // create a new session
   create({
     session: SESSION_NAME,
     disableWelcome: true,
@@ -57,9 +76,8 @@ const start = async (client: Whatsapp) => {
   client.onMessage(async (message) => {
     if (!message.body) return
 
-    if (message.body === 'Hi') {
-      await client.sendText(message.from, systemInfo())
-    }
+    // execute middlewares
+    await Promise.all([...middlewares.values()].map((middleware) => middleware(client, message)))
 
     if (PREFIXES.some((prefix) => message.body!.startsWith(prefix))) {
       const command = message.body!.toLowerCase().trim().slice(1).split(' ')[0]
