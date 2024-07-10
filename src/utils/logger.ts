@@ -19,7 +19,7 @@ export const defaultLogger = createLogger({
   transports: [new transports.Console()],
 })
 
-export const logger = {
+export const Logger = {
   error: (message: string, error?: Error) => {
     if (error) {
       defaultLogger.error(message, { stack: error.stack })

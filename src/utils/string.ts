@@ -1,4 +1,4 @@
-export const string = {
+export const String = {
   normalize: (text: string) => {
     if (!text) return ''
 
@@ -32,10 +32,10 @@ export const string = {
 
   infoText: (text: string) => {
     return {
-      tokens: string.countTokens(text),
-      words: string.countWords(text),
-      lines: string.countLines(text),
-      characters: string.countCharacters(text),
+      tokens: String.countTokens(text),
+      words: String.countWords(text),
+      lines: String.countLines(text),
+      characters: String.countCharacters(text),
     }
   },
 }

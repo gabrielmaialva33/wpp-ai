@@ -1,13 +1,13 @@
 import * as fs from 'node:fs'
 
 import { Env } from '../env.js'
-import { context } from './context.js'
-import { string } from './string.js'
-import { logger } from './logger.js'
+import { Context } from './context.js'
+import { String } from './string.js'
+import { Logger } from './logger.js'
 
 const NAME = Env.BOT_NAME
 
-export const history = {
+export const History = {
   build: (input: string, output: string, replyUser: string) => {
     const io = input.replace(`\n${NAME}(${replyUser}):|`, '')
     return `${io}${NAME}(${replyUser}):|${output}|\n`
@@ -18,17 +18,18 @@ export const history = {
     return `${io}${NAME}(${replyUser}):|${output}|\n`
   },
 
-  buildChat: ({ user, replyToUser }: context) => {
-    if (replyToUser?.name) return `${user.name}(${replyToUser.name}):|${user.message}|\n`
-    return `${user.name}:|${user.message}|\n`
+  buildChat: ({ user, replyToUser }: Context) => {
+    if (replyToUser?.username)
+      return `${user.username}(${replyToUser.username}):|${user.message}|\n`
+    return `${user.username}:|${user.message}|\n`
   },
 
   write: (text: string) => {
     if (fs.existsSync(process.cwd() + '/tmp/history.gpt.txt')) {
       const main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
       const history = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
-      const prompt = string.removeBreakLines(main + history)
-      if (string.countTokens(prompt) > 3700) history.slice(2)
+      const prompt = String.removeBreakLines(main + history)
+      if (String.countTokens(prompt) > 3700) history.slice(2)
     }
     fs.createWriteStream(process.cwd() + '/tmp/history.gpt.txt', { flags: 'a' }).write(text)
   },
@@ -45,6 +46,6 @@ export const history = {
     if (isExists) fs.unlinkSync(process.cwd() + '/tmp/history.gpt.txt')
     fs.createWriteStream(process.cwd() + '/tmp/history.gpt.txt', { flags: 'a' }).write('')
 
-    logger.debug('clean history')
+    Logger.debug('clean history')
   },
 }

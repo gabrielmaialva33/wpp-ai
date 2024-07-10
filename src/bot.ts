@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 
 import { create, SocketState, Whatsapp } from '@wppconnect-team/wppconnect'
 
-import { logger } from './utils/logger.js'
+import { Logger } from './utils/logger.js'
 
 export const SESSION_NAME = 'wpp_ai'
 export const PREFIXES = ['!', '/', '#', '$']
@@ -63,7 +63,7 @@ export const Bot = async () => {
     disableWelcome: true,
   })
     .then((client) => start(client))
-    .catch((e) => logger.error(e))
+    .catch((e) => Logger.error(e))
 }
 
 const start = async (client: Whatsapp) => {
@@ -71,14 +71,14 @@ const start = async (client: Whatsapp) => {
     if (state === SocketState.CONFLICT) client.useHere()
 
     if (state === SocketState.UNPAIRED) {
-      logger.info(`bot with session name ${SESSION_NAME} is unpaired`)
+      Logger.info(`bot with session name ${SESSION_NAME} is unpaired`)
     }
     if (state === SocketState.CONNECTED)
-      logger.info(`bot with session name ${SESSION_NAME} is connected`)
+      Logger.info(`bot with session name ${SESSION_NAME} is connected`)
   })
 
   client.onReactionMessage((react: any) => {
-    logger.info(`reaction message: ${react}`)
+    Logger.info(`reaction message: ${react}`)
   })
 
   client.onMessage(async (message) => {
@@ -87,7 +87,7 @@ const start = async (client: Whatsapp) => {
     // execute middlewares
     await Promise.all(
       [...middlewares.values()].map((middleware) => middleware(client, message))
-    ).catch((e) => logger.error(e))
+    ).catch((e) => Logger.error(e))
 
     if (PREFIXES.some((prefix) => message.body!.startsWith(prefix))) {
       const command = message.body!.toLowerCase().trim().slice(1).split(' ')[0]

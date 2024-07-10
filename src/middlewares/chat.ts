@@ -1,9 +1,9 @@
 import { Message, Whatsapp } from '@wppconnect-team/wppconnect'
 
-import { context } from '../utils/context.js'
+import { Context } from '../utils/context.js'
 
 export const execute = async (client: Whatsapp, message: Message) => {
-  const c = await context.getContext(client, message)
+  const c = await Context.get(client, message)
 
   console.log(c)
 
