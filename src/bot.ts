@@ -64,9 +64,7 @@ export const Bot = async () => {
   create({
     session: Env.WPP_SESSION,
     disableWelcome: true,
-  })
-    .then((client) => start(client))
-    .catch((e) => Logger.error(e))
+  }).then((client) => start(client))
 }
 
 const start = async (client: Whatsapp) => {

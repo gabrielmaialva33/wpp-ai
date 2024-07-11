@@ -3,14 +3,14 @@ import { Logger } from './utils/logger.js'
 import { History } from './utils/index.js'
 
 const main = async () => {
-  try {
-    History.clean()
-    await Bot().then(() => Logger.info('bot started'))
-  } catch (error) {
-    console.log(error)
-  }
+  History.clean()
+  await Bot().then(() => Logger.info('bot started'))
 }
 
 ;(async () => {
-  await main()
+  try {
+    await main()
+  } catch (error) {
+    console.log(error)
+  }
 })()

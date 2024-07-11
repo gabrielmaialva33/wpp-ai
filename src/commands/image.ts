@@ -15,7 +15,10 @@ export const image = {
     if (!input) return
 
     const response = await AI.createImage(input)
-    if (!response.data || response.data.length === 0) return
+    if (!response.data || response.data.length === 0)
+      return client.sendText(message.from, '_não foi possível gerar a imagem_', {
+        quotedMsg: message.id,
+      })
 
     const data = response.data[0]
     if (!data.url) return
