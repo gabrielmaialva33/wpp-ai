@@ -12,8 +12,8 @@ class OpenAI extends OpenAIApi {
     model: 'gpt-3.5-turbo-instruct',
     temperature: 0.7,
     max_tokens: 256,
-    frequency_penalty: 0.7,
-    presence_penalty: 0.7,
+    frequency_penalty: 0.3,
+    presence_penalty: 0.4,
     n: 1,
     stop: ['||'],
   } as CompletionCreateParamsBase

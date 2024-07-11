@@ -5,12 +5,14 @@ import { PREFIXES } from '../bot.js'
 import { History, Context, String } from '../utils/index.js'
 
 export const execute = async (client: Whatsapp, message: Message) => {
-  console.log('chat middleware', message.type)
-  // only write if message is a chat
   if (message.type !== MessageType.CHAT) return
-
-  // is command message
   if (String.isCommand(PREFIXES, message.body)) return
+
+  if (message.quotedMsgId) {
+    const quotedMessage = await client.getMessageById(message.quotedMsgId)
+    const WID = await client.getWid()
+    if (quotedMessage.sender.id._serialized === WID) return
+  }
 
   const context = await Context.get(client, message)
   const history = History.buildChat(context)

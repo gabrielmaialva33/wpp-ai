@@ -9,19 +9,19 @@ const NAME = Env.BOT_NAME
 
 export const History = {
   build: (input: string, output: string, replyUser: string) => {
-    const io = input.replace(`\n${NAME}(${replyUser}):|`, '')
-    return `${io}${NAME}(${replyUser}):|${output}|\n`
+    const io = input.replace(`\n${NAME}(${replyUser}):||`, '')
+    return `${io}${NAME}(${replyUser}):||${output}||\n`
   },
 
   buildReply: (input: string, output: string, replyUser: string) => {
-    const io = input.replace(`\n${NAME}(${replyUser}):|`, '')
-    return `${io}${NAME}(${replyUser}):|${output}|\n`
+    const io = input.replace(`\n${NAME}(${replyUser}):||`, '')
+    return `${io}${NAME}(${replyUser}):||${output}||\n`
   },
 
   buildChat: ({ user, replyToUser }: Context) => {
     if (replyToUser?.username)
-      return `${user.username}(${replyToUser.username}):|${user.message}|\n`
-    return `${user.username}:|${user.message}|\n`
+      return `${user.username}(${replyToUser.username}):||${user.message}||\n`
+    return `${user.username}:||${user.message}||\n`
   },
 
   write: (text: string) => {

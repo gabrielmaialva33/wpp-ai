@@ -43,4 +43,8 @@ export const String = {
     if (!text) return false
     return prefixes.some((prefix) => text.startsWith(prefix))
   },
+
+  include: (text: string, includes: string) => {
+    return new RegExp(includes, 'i').test(text)
+  },
 }
