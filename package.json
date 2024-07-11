@@ -65,6 +65,7 @@
     "luxon": "^3.4.4",
     "openai": "^4.52.5",
     "reflect-metadata": "^0.2.2",
+    "replicate": "^0.31.1",
     "source-map-support": "^0.5.21",
     "winston": "^3.13.0"
   }

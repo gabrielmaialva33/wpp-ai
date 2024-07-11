@@ -11,6 +11,11 @@ export const Env = cleanEnv(process.env, {
     example: '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',
     docs: 'https://beta.openai.com/docs/api-reference/authentication',
   }),
+  REPLICATE_API_TOKEN: str({
+    desc: 'Replicate API Token',
+    example: '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',
+    docs: 'https://www.replicate.ai/docs/api/',
+  }),
 })
 
 export const PREFIXES = JSON.parse(Env.PREFIXES) as string[]
