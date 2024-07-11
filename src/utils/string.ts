@@ -38,4 +38,9 @@ export const String = {
       characters: String.countCharacters(text),
     }
   },
+
+  isCommand: (prefixes: string[], text?: string) => {
+    if (!text) return false
+    return prefixes.some((prefix) => text.startsWith(prefix))
+  },
 }
