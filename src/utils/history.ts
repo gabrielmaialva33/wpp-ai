@@ -25,7 +25,10 @@ export const History = {
   },
 
   write: (text: string) => {
-    if (fs.existsSync(process.cwd() + '/tmp/history.gpt.txt')) {
+    if (
+      fs.existsSync(process.cwd() + '/tmp/history.gpt.txt') &&
+      fs.existsSync(process.cwd() + '/tmp/main.gpt.txt')
+    ) {
       const main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
       const history = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
       const prompt = String.removeBreakLines(main + history)

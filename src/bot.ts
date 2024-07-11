@@ -5,17 +5,14 @@ import { fileURLToPath } from 'node:url'
 import { create, SocketState, Whatsapp } from '@wppconnect-team/wppconnect'
 
 import { Logger } from './utils/logger.js'
-
-export const SESSION_NAME = 'wpp_ai'
-export const PREFIXES = ['!', '/', '#', '$']
+import { Env, PREFIXES } from './env.js'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
-
+const middlewares = new Map<string, (client: Whatsapp, message: any) => Promise<void>>()
 const commands = new Map<
   string,
   { execute: (client: Whatsapp, message: any) => Promise<void>; description: string }
 >()
-const middlewares = new Map<string, (client: Whatsapp, message: any) => Promise<void>>()
 
 const resolvePath = (file: string) => {
   const isCompiled = dirname.includes('/build/')
@@ -59,7 +56,7 @@ export const Bot = async () => {
 
   // create a new session
   create({
-    session: SESSION_NAME,
+    session: Env.WPP_SESSION,
     disableWelcome: true,
   })
     .then((client) => start(client))
@@ -71,14 +68,15 @@ const start = async (client: Whatsapp) => {
     if (state === SocketState.CONFLICT) client.useHere()
 
     if (state === SocketState.UNPAIRED) {
-      Logger.info(`bot with session name ${SESSION_NAME} is unpaired`)
+      Logger.info(`bot with session name ${Env.WPP_SESSION} is unpaired`)
     }
     if (state === SocketState.CONNECTED)
-      Logger.info(`bot with session name ${SESSION_NAME} is connected`)
+      Logger.info(`bot with session name ${Env.WPP_SESSION} is connected`)
   })
 
   client.onReactionMessage((react: any) => {
-    Logger.info(`reaction message: ${react}`)
+    console.log(react)
+    Logger.info(`reaction message`)
   })
 
   client.onMessage(async (message) => {
