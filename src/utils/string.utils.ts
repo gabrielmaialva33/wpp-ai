@@ -1,5 +1,3 @@
-import { PREFIXES } from '../bot.js'
-
 export const StringUtils = {
   normalize: (text: string) => {
     if (!text) return ''
@@ -50,10 +48,7 @@ export const StringUtils = {
     return new RegExp(includes, 'i').test(text)
   },
 
-  removePrefix: (text: string) => {
-    return PREFIXES.reduce((_acc, prefix) => {
-      console.log('prefix', prefix)
-      return text.replace(prefix, '').trim()
-    }, text)
+  getParam: (text: string, index: number) => {
+    return text.split(' ').slice(index).join(' ')
   },
 }

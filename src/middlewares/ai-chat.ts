@@ -1,23 +1,22 @@
 import { Message, Whatsapp } from '@wppconnect-team/wppconnect'
 import { MessageType } from '@wppconnect-team/wppconnect/dist/api/model/enum/index.js'
 
-import { PREFIXES } from '../bot.js'
-import { Env } from '../env.js'
+import { Env, PREFIXES } from '../env.js'
 
 import { Context, StringUtils, History } from '../utils/index.js'
 import { AI } from '../plugins/openai.plugin.js'
 
 export const execute = async (client: Whatsapp, message: Message) => {
   if (message.type !== MessageType.CHAT) return
-  if (StringUtils.isCommand(PREFIXES, message.body)) return
   if (!message.body) return
+  if (StringUtils.isCommand(PREFIXES, message.body)) return
 
   const context = await Context.get(client, message)
 
   if (StringUtils.include(message.body, Env.BOT_NAME)) {
     const input = `${context.user.username}(${Env.BOT_NAME}):|${context.text}|\n`
 
-    await client.startTyping(message.from, 2000)
+    await client.startTyping(message.from, 4000)
 
     const response = await AI.complete(input, context.user.username)
 
@@ -41,8 +40,6 @@ export const execute = async (client: Whatsapp, message: Message) => {
     const WID = await client.getWid()
 
     if (quotedMessage.sender.id._serialized === WID) {
-      console.log('quotedMessage from bot')
-
       const input = `${context.user.username}(${Env.BOT_NAME}):|${context.text}|\n`
 
       await client.startTyping(message.from, 2000)
@@ -51,7 +48,6 @@ export const execute = async (client: Whatsapp, message: Message) => {
 
       // @ts-ignore
       if (response.choices.length === 0 || !response.choices[0].text) return
-
       // @ts-ignore
       const choices = response.choices
       const random = Math.floor(Math.random() * choices.length)

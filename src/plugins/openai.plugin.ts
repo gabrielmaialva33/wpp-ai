@@ -3,6 +3,7 @@ import * as fs from 'node:fs'
 import { OpenAI as OpenAIApi } from 'openai'
 import { CompletionCreateParamsBase } from 'openai/resources/completions'
 import { DateTime } from 'luxon'
+import jimp from 'jimp'
 
 import { Env } from '../env.js'
 import { StringUtils } from '../utils/index.js'
@@ -55,6 +56,32 @@ class OpenAI extends OpenAIApi {
     }
 
     return this.completions.create({ ...this.completion, prompt }, { timeout: 30000 })
+  }
+
+  async createImage(text: string) {
+    return this.images.generate(
+      {
+        prompt: text,
+        model: 'dall-e-3',
+        n: 1,
+        quality: 'standard',
+        size: '1024x1024',
+      },
+      { timeout: 60000 }
+    )
+  }
+
+  async createImageVariation(path: string) {
+    const file = fs.readFileSync(path)
+    await jimp.read(file).then((image) => image.writeAsync(path))
+    const image = await jimp.read(path)
+    await image.resize(1024, 1024).writeAsync(path)
+
+    return this.images.createVariation({
+      model: 'dall-e-2',
+      size: '1024x1024',
+      image: fs.createReadStream(path),
+    })
   }
 }
 

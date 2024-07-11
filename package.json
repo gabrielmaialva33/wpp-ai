@@ -61,6 +61,7 @@
     "@wppconnect-team/wppconnect": "^1.32.3",
     "dotenv": "^16.4.5",
     "envalid": "^8.0.0",
+    "jimp": "^0.22.12",
     "luxon": "^3.4.4",
     "openai": "^4.52.5",
     "reflect-metadata": "^0.2.2",

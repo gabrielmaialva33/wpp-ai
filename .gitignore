@@ -3,6 +3,8 @@ node_modules
 build
 tmp/*
 !tmp/.gitkeep
+cache/*
+!cache/.gitkeep
 
 
 # Secrets
