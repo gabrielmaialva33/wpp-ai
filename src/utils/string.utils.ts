@@ -1,4 +1,6 @@
-export const String = {
+import { PREFIXES } from '../bot.js'
+
+export const StringUtils = {
   normalize: (text: string) => {
     if (!text) return ''
 
@@ -32,10 +34,10 @@ export const String = {
 
   infoText: (text: string) => {
     return {
-      tokens: String.countTokens(text),
-      words: String.countWords(text),
-      lines: String.countLines(text),
-      characters: String.countCharacters(text),
+      tokens: StringUtils.countTokens(text),
+      words: StringUtils.countWords(text),
+      lines: StringUtils.countLines(text),
+      characters: StringUtils.countCharacters(text),
     }
   },
 
@@ -46,5 +48,12 @@ export const String = {
 
   include: (text: string, includes: string) => {
     return new RegExp(includes, 'i').test(text)
+  },
+
+  removePrefix: (text: string) => {
+    return PREFIXES.reduce((_acc, prefix) => {
+      console.log('prefix', prefix)
+      return text.replace(prefix, '').trim()
+    }, text)
   },
 }

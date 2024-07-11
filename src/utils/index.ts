@@ -1,5 +1,5 @@
 export * from './context.js'
 export * from './history.js'
 export * from './logger.js'
-export * from './string.js'
+export * from './string.utils.js'
 export * from './system.js'

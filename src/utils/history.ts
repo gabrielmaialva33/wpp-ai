@@ -2,7 +2,7 @@ import * as fs from 'node:fs'
 
 import { Env } from '../env.js'
 import { Context } from './context.js'
-import { String } from './string.js'
+import { StringUtils } from './string.utils.js'
 import { Logger } from './logger.js'
 
 const NAME = Env.BOT_NAME
@@ -28,8 +28,8 @@ export const History = {
     if (fs.existsSync(process.cwd() + '/tmp/history.gpt.txt')) {
       const main = fs.readFileSync(process.cwd() + '/tmp/main.gpt.txt', 'utf8')
       const history = fs.readFileSync(process.cwd() + '/tmp/history.gpt.txt', 'utf8')
-      const prompt = String.removeBreakLines(main + history)
-      if (String.countTokens(prompt) > 3700) history.slice(2)
+      const prompt = StringUtils.removeBreakLines(main + history)
+      if (StringUtils.countTokens(prompt) > 3700) history.slice(2)
     }
     fs.createWriteStream(process.cwd() + '/tmp/history.gpt.txt', { flags: 'a' }).write(text)
   },

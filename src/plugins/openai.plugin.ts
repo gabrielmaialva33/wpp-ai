@@ -5,7 +5,7 @@ import { CompletionCreateParamsBase } from 'openai/resources/completions'
 import { DateTime } from 'luxon'
 
 import { Env } from '../env.js'
-import { String } from '../utils/index.js'
+import { StringUtils } from '../utils/index.js'
 
 class OpenAI extends OpenAIApi {
   private completion = {
@@ -43,11 +43,11 @@ class OpenAI extends OpenAIApi {
     //   'ai.complete'
     // )
 
-    const prompt = String.removeBreakLines(
+    const prompt = StringUtils.removeBreakLines(
       main + history + text + `${Env.BOT_NAME}(${username}):||`
     )
 
-    if (String.countTokens(prompt) > 4096) {
+    if (StringUtils.countTokens(prompt) > 4096) {
       // this.logger.error('tokens limit exceeded!', 'ai.complete')
 
       //await HistoryUtils.populate_history()

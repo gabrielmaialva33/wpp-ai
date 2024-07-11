@@ -4,17 +4,17 @@ import { MessageType } from '@wppconnect-team/wppconnect/dist/api/model/enum/ind
 import { PREFIXES } from '../bot.js'
 import { Env } from '../env.js'
 
-import { Context, String, History } from '../utils/index.js'
+import { Context, StringUtils, History } from '../utils/index.js'
 import { AI } from '../plugins/openai.plugin.js'
 
 export const execute = async (client: Whatsapp, message: Message) => {
   if (message.type !== MessageType.CHAT) return
-  if (String.isCommand(PREFIXES, message.body)) return
+  if (StringUtils.isCommand(PREFIXES, message.body)) return
   if (!message.body) return
 
   const context = await Context.get(client, message)
 
-  if (String.include(message.body, Env.BOT_NAME)) {
+  if (StringUtils.include(message.body, Env.BOT_NAME)) {
     const input = `${context.user.username}(${Env.BOT_NAME}):|${context.text}|\n`
 
     await client.startTyping(message.from, 2000)

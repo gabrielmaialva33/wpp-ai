@@ -5,9 +5,7 @@ import { fileURLToPath } from 'node:url'
 import { create, SocketState, Whatsapp } from '@wppconnect-team/wppconnect'
 
 import { Logger } from './utils/logger.js'
-
-export const SESSION_NAME = 'wpp_ai'
-export const PREFIXES = ['!', '/', '#', '$']
+import { Env } from './env.js'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -65,7 +63,7 @@ export const Bot = async () => {
 
   // create a new session
   create({
-    session: SESSION_NAME,
+    session: Env.SESSION_NAME,
     disableWelcome: true,
   })
     .then((client) => start(client))
@@ -77,10 +75,10 @@ const start = async (client: Whatsapp) => {
     if (state === SocketState.CONFLICT) client.useHere()
 
     if (state === SocketState.UNPAIRED) {
-      Logger.info(`bot with session name ${SESSION_NAME} is unpaired`)
+      Logger.info(`bot with session name ${Env.SESSION_NAME} is unpaired`)
     }
     if (state === SocketState.CONNECTED)
-      Logger.info(`bot with session name ${SESSION_NAME} is connected`)
+      Logger.info(`bot with session name ${Env.SESSION_NAME} is connected`)
   })
 
   client.onReactionMessage((react: any) => {

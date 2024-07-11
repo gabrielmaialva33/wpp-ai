@@ -2,11 +2,11 @@ import { Message, Whatsapp } from '@wppconnect-team/wppconnect'
 import { MessageType } from '@wppconnect-team/wppconnect/dist/api/model/enum/index.js'
 
 import { PREFIXES } from '../bot.js'
-import { History, Context, String } from '../utils/index.js'
+import { History, Context, StringUtils } from '../utils/index.js'
 
 export const execute = async (client: Whatsapp, message: Message) => {
   if (message.type !== MessageType.CHAT) return
-  if (String.isCommand(PREFIXES, message.body)) return
+  if (StringUtils.isCommand(PREFIXES, message.body)) return
 
   if (message.quotedMsgId) {
     const quotedMessage = await client.getMessageById(message.quotedMsgId)
