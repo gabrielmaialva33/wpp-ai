@@ -7,8 +7,6 @@ export const execute = async (client: Whatsapp, message: Message) => {
 
   console.log(c)
 
-  const from = message.from
-
   // send a reply to the user
-  await client.sendText(from, `reading your message...`)
+  //await client.sendText(from, `reading your message...`)
 }

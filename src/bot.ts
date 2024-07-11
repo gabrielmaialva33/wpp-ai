@@ -17,13 +17,19 @@ const commands = new Map<
 >()
 const middlewares = new Map<string, (client: Whatsapp, message: any) => Promise<void>>()
 
+// const resolvePath = (file: string) => {
+//   const isCompiled = dirname.includes('/build/')
+//   return isCompiled ? path.resolve(dirname, `./${file}`) : path.resolve(dirname, `../${file}`)
+// }
+
 const resolvePath = (file: string) => {
   const isCompiled = dirname.includes('/build/')
-  return isCompiled ? path.resolve(dirname, `./${file}`) : path.resolve(dirname, `../${file}`)
+  return isCompiled ? path.resolve(dirname, `../src/${file}`) : path.resolve(dirname, file)
 }
 
 const loadCommands = async () => {
   const commandsPath = resolvePath('commands')
+  console.log(`Commands path: ${commandsPath}`)
   const commandFiles = fs
     .readdirSync(commandsPath)
     .filter((file) => file.endsWith('.js') || file.endsWith('.ts'))
@@ -94,7 +100,7 @@ const start = async (client: Whatsapp) => {
       if (commands.has(command)) {
         await commands.get(command)!.execute(client, message)
       } else {
-        await client.sendText(message.from, 'command not found')
+        //await client.sendText(message.from, 'command not found')
       }
     }
   })
