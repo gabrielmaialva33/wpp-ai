@@ -1,13 +1,12 @@
-import * as fs from 'node:fs'
-import * as crypto from 'node:crypto'
-
 import { Message, Whatsapp } from '@wppconnect-team/wppconnect'
-
-import { Repl } from '../plugins/replicate.plugin.js'
 import { StringUtils, Telegraph } from '../utils/index.js'
+import crypto from 'node:crypto'
+import fs from 'node:fs'
+import { Repl } from '../plugins/replicate.plugin.js'
+import { animate } from './animate.js'
 
-export const animate = {
-  name: 'animate',
+export const animate2: typeof animate = {
+  name: 'animate2',
   description: 'gera uma animação com o texto e imagem informados',
   execute: async (client: Whatsapp, message: Message) => {
     if (!message.body) return
@@ -32,7 +31,7 @@ export const animate = {
       const file = await Telegraph.uploadByBuffer(fs.readFileSync(filename), 'image/png')
 
       if (imageUrl) {
-        const response = await Repl.animation(file.link, input)
+        const response = await Repl.animation2(file.link, input)
         if (response)
           return client.sendVideoAsGif(
             message.from,
