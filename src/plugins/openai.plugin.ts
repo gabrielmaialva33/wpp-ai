@@ -11,10 +11,10 @@ import { StringUtils } from '../utils/index.js'
 class OpenAI extends OpenAIApi {
   private completion = {
     model: 'gpt-3.5-turbo-instruct',
-    temperature: 0.7,
-    max_tokens: 256,
-    frequency_penalty: 0.3,
-    presence_penalty: 0.4,
+    temperature: 0.9,
+    max_tokens: 128,
+    frequency_penalty: 0.8,
+    presence_penalty: 0.8,
     n: 1,
     stop: ['||'],
   } as CompletionCreateParamsBase

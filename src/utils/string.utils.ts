@@ -48,6 +48,10 @@ export const StringUtils = {
     return new RegExp(includes, 'i').test(text)
   },
 
+  includes: (text: string, includes: string[]) => {
+    return includes.some((include) => StringUtils.include(text, include))
+  },
+
   getParam: (text: string, index: number) => {
     return text.split(' ').slice(index).join(' ')
   },

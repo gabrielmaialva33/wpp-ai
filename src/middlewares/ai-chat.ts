@@ -1,7 +1,7 @@
 import { Message, Whatsapp } from '@wppconnect-team/wppconnect'
 import { MessageType } from '@wppconnect-team/wppconnect/dist/api/model/enum/index.js'
 
-import { Env, PREFIXES } from '../env.js'
+import { Env, NAMES, PREFIXES } from '../env.js'
 
 import { Context, StringUtils, History } from '../utils/index.js'
 import { AI } from '../plugins/openai.plugin.js'
@@ -13,8 +13,8 @@ export const execute = async (client: Whatsapp, message: Message) => {
 
   const context = await Context.get(client, message)
 
-  if (StringUtils.include(message.body, Env.BOT_NAME)) {
-    const input = `${context.user.username}(${Env.BOT_NAME}):|${context.text}|\n`
+  if (StringUtils.includes(message.body, NAMES)) {
+    const input = `${context.user.username}(${Env.BOT_NAME}):||${context.text}||\n`
 
     await client.startTyping(message.from, 4000)
 
@@ -28,7 +28,7 @@ export const execute = async (client: Whatsapp, message: Message) => {
     const random = Math.floor(Math.random() * choices.length)
     const output = choices[random].text
 
-    const history = History.build(input, output, context.user.name)
+    const history = History.build(input, output, context.user.username)
     History.write(history)
 
     return client.sendText(message.from, output, { quotedMsg: message.id })
@@ -40,7 +40,7 @@ export const execute = async (client: Whatsapp, message: Message) => {
     const WID = await client.getWid()
 
     if (quotedMessage.sender.id._serialized === WID) {
-      const input = `${context.user.username}(${Env.BOT_NAME}):|${context.text}|\n`
+      const input = `${context.user.username}(${Env.BOT_NAME}):||${context.text}||\n`
 
       await client.startTyping(message.from, 2000)
 
@@ -53,7 +53,7 @@ export const execute = async (client: Whatsapp, message: Message) => {
       const random = Math.floor(Math.random() * choices.length)
       const output = choices[random].text
 
-      const history = History.buildReply(input, output, context.user.name)
+      const history = History.buildReply(input, output, context.user.username)
       History.write(history)
 
       return client.sendText(message.from, output, { quotedMsg: message.id })

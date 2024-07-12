@@ -8,9 +8,6 @@ export const variation = {
   name: 'variation',
   description: 'cria uma variação de uma imagem',
   execute: async (client: Whatsapp, message: Message) => {
-    // if (message.type !== MessageType.CHAT) return
-    // if (!message.body) return
-
     if (message.quotedMsgId) {
       const quotedMessage = await client.getMessageById(message.quotedMsgId)
 

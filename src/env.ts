@@ -5,6 +5,7 @@ import { cleanEnv, str } from 'envalid'
 export const Env = cleanEnv(process.env, {
   WPP_SESSION: str({ desc: 'Session Name', example: 'wpp_ai' }),
   BOT_NAME: str({ desc: 'Bot Name', example: 'AI' }),
+  BOT_NAMES: str({ desc: 'Bot Names', example: '["AI", "Bot"]' }),
   PREFIXES: str({ desc: 'Command Prefixes', example: '["!", "/", "$"]' }),
   OPENAI_TOKEN: str({
     desc: 'OpenAI API Token',
@@ -19,3 +20,4 @@ export const Env = cleanEnv(process.env, {
 })
 
 export const PREFIXES = JSON.parse(Env.PREFIXES) as string[]
+export const NAMES = JSON.parse(Env.BOT_NAMES) as string[]

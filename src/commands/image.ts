@@ -23,6 +23,6 @@ export const image = {
     const data = response.data[0]
     if (!data.url) return
 
-    return client.sendImage(message.from, data.url, 'image.png', data.revised_prompt, message.id)
+    return client.sendImage(message.from, data.url, 'image.png', undefined, message.id)
   },
 }

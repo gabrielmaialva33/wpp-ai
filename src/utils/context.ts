@@ -18,9 +18,20 @@ export type Context = {
 
 const getUser = async (client: Whatsapp, message: Message): Promise<UserContext> => {
   const user = await client.getContact(message.author ? message.author : message.from)
-  const username = user.formattedName.split(' ')[1]
-    ? user.formattedName.split(' ')[1]
-    : user.formattedName.split(' ')[0]
+
+  console.log(`GET USER
+    user.pushname: ${user.pushname},
+    user.formattedName: ${user.formattedName},
+    user.shortName: ${user.shortName},
+    user.name: ${user.name}
+    user.verifiedName: ${user.verifiedName}
+  `)
+
+  const username = user.pushname
+    ? user.pushname
+    : user.formattedName.split(' ')[1]
+      ? user.formattedName.split(' ')[1]
+      : user.formattedName.split(' ')[0]
 
   const pic = await client.getProfilePicFromServer(user.id._serialized)
 
@@ -40,6 +51,13 @@ const getReplyTo = async (client: Whatsapp, message: Message): Promise<UserConte
   const quotedMessage = await client.getMessageById(message.quotedMsgId)
 
   const user = await client.getContact(quotedMessage.sender.id._serialized)
+  console.log(`REPLY TO
+    user.pushname: ${user.pushname},
+    user.formattedName: ${user.formattedName},
+    user.shortName: ${user.shortName},
+    user.name: ${user.name}
+    user.verifiedName: ${user.verifiedName}
+  `)
 
   const username = user.pushname
     ? user.pushname
