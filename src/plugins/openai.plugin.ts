@@ -11,9 +11,9 @@ import { StringUtils } from '../utils/index.js'
 class OpenAI extends OpenAIApi {
   private completion = {
     model: 'gpt-3.5-turbo-instruct',
-    temperature: 0.9,
+    temperature: 0.8,
     max_tokens: 128,
-    frequency_penalty: 0.8,
+    frequency_penalty: 0.6,
     presence_penalty: 0.8,
     n: 1,
     stop: ['||'],
