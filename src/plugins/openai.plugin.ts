@@ -3,7 +3,7 @@ import * as fs from 'node:fs'
 import { OpenAI as OpenAIApi } from 'openai'
 import { CompletionCreateParamsBase } from 'openai/resources/completions'
 import { DateTime } from 'luxon'
-import jimp from 'jimp'
+import { Jimp } from 'jimp'
 
 import { Env } from '../env.js'
 import { StringUtils } from '../utils/index.js'
@@ -73,11 +73,16 @@ class OpenAI extends OpenAIApi {
 
   async createImageVariation(path: string) {
     const file = fs.readFileSync(path)
-    await jimp.read(file).then((image) => image.writeAsync(path))
-    const image = await jimp.read(path)
-    await image.resize(1024, 1024).writeAsync(path)
 
-    return this.images.createVariation({
+    await Jimp.read(file).then((image) => image.write(`${path}.png`))
+
+    const image = await Jimp.read(`${path}.png`)
+    image.resize({ h: 1024, w: 1024 })
+    await image.getBuffer('image/png').then((buffer) => {
+      fs.writeFileSync(`${path}.png`, buffer)
+    })
+
+    this.images.createVariation({
       model: 'dall-e-2',
       size: '1024x1024',
       image: fs.createReadStream(path),
