@@ -93,6 +93,62 @@ src/
 └── utils/              # Shared utilities
 ```
 
+## Multi-Agent System
+
+### Agent Architecture
+
+The bot features a sophisticated multi-agent system where specialized AI agents collaborate to handle complex tasks:
+
+**Orchestrator (Maestro)** 🎯
+- Model: `nvidia/llama-3.3-nemotron-super-49b-v1`
+- Role: Coordinates all other agents, analyzes tasks, delegates work
+- Capabilities: Task decomposition, agent routing, response aggregation
+
+**Research Agent (Sherlock)** 🔍
+- Model: `nvidia/llama-3.1-nemotron-nano-8b-v1`
+- Role: Information gathering, fact-checking, web search
+- Specialties: Research, verification, data synthesis
+
+**Code Agent (Dev)** 💻
+- Model: `deepseek-ai/deepseek-r1`
+- Role: Programming, debugging, technical explanations
+- Specialties: Code generation, debugging, technical documentation
+
+**Math Agent (Newton)** 🔢
+- Model: `deepseek-ai/deepseek-r1`
+- Role: Mathematical calculations, statistics, proofs
+- Specialties: Equations, calculus, data analysis
+
+**Creative Agent (Artista)** 🎨
+- Model: `mistralai/mixtral-8x22b-instruct`
+- Role: Creative writing, storytelling, content generation
+- Specialties: Stories, poetry, creative content
+
+**Visual Agent (Picasso)** 🖼️
+- Model: `stabilityai/sdxl-turbo`
+- Role: Image generation, visual descriptions
+- Specialties: Art creation, illustrations, visual design
+
+### Agent Features
+
+**Message Reactions**: Agents react to messages with emojis showing:
+- Processing states (🤔 thinking, ⚙️ working, 🔍 searching)
+- Emotions (😊 happy, 😢 sad, 🎉 excited)
+- Content type (💻 code, 🔢 math, 🎨 creative)
+- Quality indicators (✅ verified, ⚠️ warning, 🎯 success)
+
+**Natural Conversation Flow**: Agents can:
+- Join conversations naturally when relevant
+- Detect confusion and offer help
+- Remember context and past interactions
+- Adapt tone based on group dynamics
+
+**Collaboration Patterns**:
+- Sequential: Agents work one after another
+- Parallel: Multiple agents work simultaneously
+- Delegation: Agents can ask other agents for help
+- Aggregation: Orchestrator combines multiple agent responses
+
 ## AI Providers Integration
 
 ### Available AI Providers
@@ -114,17 +170,35 @@ The bot now supports multiple AI providers with automatic fallback:
 
 - `!ai [provider] <pergunta>` - Chat with specific AI provider
 - `!compare <pergunta>` - Compare responses from all available AIs
-- `!image [provider] <descrição>` - Generate images with AI
+- `!image <descrição>` - Generate images with Visual Agent (Picasso)
 - `!help` - List all available commands
+
+**Multi-Agent Commands:**
+
+- `!team <tarefa>` - Activate the full agent team for complex tasks
+- `!team status` - Show available agents and their status
+- `!team list` - List all agents with their capabilities
+- `!agent <nome> <mensagem>` - Talk directly to a specific agent
+- `!vibe` - Analyze group mood and conversation vibe
 
 **Command Examples:**
 
 ```
+# Basic AI Commands
 !ai gemini Qual é a capital do Brasil?
 !ai nvidia Explique computação quântica
 !compare O que é inteligência artificial?
-!image nvidia um gato astronauta no espaço
-!image openai cidade futurista ao pôr do sol
+
+# Image Generation
+!image um gato astronauta no espaço
+
+# Multi-Agent System
+!team analyze the cryptocurrency market
+!agent code write a Python sorting function
+!agent math solve x² + 5x + 6 = 0
+!agent research find information about AI
+!agent creative write a short story
+!vibe check
 ```
 
 ### Provider Selection

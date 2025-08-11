@@ -6,9 +6,9 @@ import { Logger } from '../utils/logger.js'
 
 export const image: ICommand = {
   name: 'image',
-  description: 'Gera imagens usando IA (NVIDIA, OpenAI ou Replicate)',
-  aliases: ['img', 'draw'],
-  usage: '!image [provider] <descrição da imagem>',
+  description: 'Gera imagens usando o agente Visual (Picasso)',
+  aliases: ['img', 'draw', 'desenhar'],
+  usage: '!image <descrição da imagem>',
   category: 'AI',
 
   async execute(client: Whatsapp, message: Message) {
