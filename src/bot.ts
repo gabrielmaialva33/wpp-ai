@@ -9,10 +9,19 @@ import { Env, PREFIXES } from './env.js'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const middlewares = new Map<string, (client: Whatsapp, message: any) => Promise<void>>()
-const commands = new Map<
-  string,
-  { execute: (client: Whatsapp, message: any) => Promise<void>; description: string }
->()
+
+// Enhanced command storage with full metadata
+interface StoredCommand {
+  name: string
+  execute: (client: Whatsapp, message: any) => Promise<void>
+  description: string
+  aliases?: string[]
+  usage?: string
+  category?: string
+}
+
+const commands = new Map<string, StoredCommand>()
+const commandAliases = new Map<string, string>() // Maps alias to command name
 
 // const resolvePath = (file: string) => {
 //   const isCompiled = dirname.includes('/build/')
@@ -35,10 +44,26 @@ const loadCommands = async () => {
     const commandModule = await import(`${commandsPath}/${file}`)
     const commandName = file.split('.')[0]
     if (commandModule[commandName] && commandModule[commandName].name) {
-      commands.set(commandModule[commandName].name, {
-        execute: commandModule[commandName].execute,
-        description: commandModule[commandName].description,
-      })
+      const cmd = commandModule[commandName]
+
+      // Store full command with metadata
+      const storedCommand: StoredCommand = {
+        name: cmd.name,
+        execute: cmd.execute,
+        description: cmd.description,
+        aliases: cmd.aliases,
+        usage: cmd.usage,
+        category: cmd.category,
+      }
+
+      commands.set(cmd.name, storedCommand)
+
+      // Register aliases
+      if (cmd.aliases && Array.isArray(cmd.aliases)) {
+        for (const alias of cmd.aliases) {
+          commandAliases.set(alias, cmd.name)
+        }
+      }
     }
   }
 }
@@ -101,16 +126,48 @@ const start = async (client: Whatsapp) => {
     ).catch((e) => Logger.error(e))
 
     if (PREFIXES.some((prefix) => message.body!.startsWith(prefix))) {
-      const command = message.body!.toLowerCase().trim().slice(1).split(' ')[0]
-      if (commands.has(command)) {
-        await commands.get(command)!.execute(client, message)
+      const commandText = message.body!.toLowerCase().trim().slice(1).split(' ')[0]
+
+      // Check direct command or alias
+      let command = commands.get(commandText)
+      if (!command && commandAliases.has(commandText)) {
+        const actualCommandName = commandAliases.get(commandText)!
+        command = commands.get(actualCommandName)
+      }
+
+      if (command) {
+        await command.execute(client, message)
       } else {
-        //await client.sendText(message.from, 'command not found')
+        // Command not found - you can uncomment to notify user
+        // await client.sendText(message.from, `❌ Comando "${commandText}" não encontrado. Use !help para ver os comandos disponíveis.`)
       }
     }
   })
 }
 
+// Export function to get all commands with full metadata
+export const getAllCommands = (): StoredCommand[] => {
+  return Array.from(commands.values())
+}
+
+// Legacy function for backward compatibility
 export const getCommandsList = () => {
-  return Array.from(commands.entries()).map(([name, { description }]) => ({ name, description }))
+  return Array.from(commands.entries()).map(([name, cmd]) => ({
+    name,
+    description: cmd.description,
+  }))
+}
+
+// Get specific command by name or alias
+export const getCommand = (nameOrAlias: string): StoredCommand | undefined => {
+  // Try direct name first
+  let command = commands.get(nameOrAlias.toLowerCase())
+
+  // If not found, try alias
+  if (!command && commandAliases.has(nameOrAlias.toLowerCase())) {
+    const actualCommandName = commandAliases.get(nameOrAlias.toLowerCase())!
+    command = commands.get(actualCommandName)
+  }
+
+  return command
 }
