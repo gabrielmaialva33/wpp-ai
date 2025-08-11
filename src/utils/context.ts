@@ -33,12 +33,15 @@ const getUser = async (client: Whatsapp, message: Message): Promise<UserContext>
       ? user.formattedName.split(' ')[1]
       : user.formattedName.split(' ')[0]
 
+  // @ts-ignore
   const pic = await client.getProfilePicFromServer(user.id._serialized)
 
   return {
+    // @ts-ignore
     id: user.id._serialized,
     name: user.formattedName,
     username: username.trim(),
+    // @ts-ignore
     phone: user.id.user,
     avatar_url: pic ? pic.imgFull : null,
     message: message.body ? message.body : null,
@@ -50,6 +53,7 @@ const getReplyTo = async (client: Whatsapp, message: Message): Promise<UserConte
 
   const quotedMessage = await client.getMessageById(message.quotedMsgId)
 
+  // @ts-ignore
   const user = await client.getContact(quotedMessage.sender.id._serialized)
   console.log(`REPLY TO
     user.pushname: ${user.pushname},
@@ -65,12 +69,15 @@ const getReplyTo = async (client: Whatsapp, message: Message): Promise<UserConte
       ? user.formattedName.split(' ')[1]
       : user.formattedName.split(' ')[0]
 
+  // @ts-ignore
   const pic = await client.getProfilePicFromServer(user.id._serialized)
 
   return {
+    // @ts-ignore
     id: user.id._serialized,
     name: user.formattedName,
     username: username.trim(),
+    // @ts-ignore
     phone: user.id.user,
     avatar_url: pic ? pic.imgFull : null,
     message: quotedMessage.body ? quotedMessage.body : null,

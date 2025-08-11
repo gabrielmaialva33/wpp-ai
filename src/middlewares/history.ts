@@ -11,6 +11,7 @@ export const execute = async (client: Whatsapp, message: Message) => {
   if (message.quotedMsgId) {
     const quotedMessage = await client.getMessageById(message.quotedMsgId)
     const WID = await client.getWid()
+    // @ts-ignore
     if (quotedMessage.sender.id._serialized === WID) return
   }
 

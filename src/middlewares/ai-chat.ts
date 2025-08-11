@@ -1,10 +1,10 @@
 import { Message, Whatsapp } from '@wppconnect-team/wppconnect'
 import { MessageType } from '@wppconnect-team/wppconnect/dist/api/model/enum/index.js'
 
-import { Env, NAMES, PREFIXES } from '../env.js'
-
+import { NAMES, PREFIXES } from '../env.js'
 import { Context, StringUtils, History } from '../utils/index.js'
-import { AI } from '../plugins/openai.plugin.js'
+import { AIProviderFactory } from '../infrastructure/ai/AIProviderFactory.js'
+import { Logger } from '../utils/logger.js'
 
 export const execute = async (client: Whatsapp, message: Message) => {
   if (message.type !== MessageType.CHAT) return
@@ -13,50 +13,59 @@ export const execute = async (client: Whatsapp, message: Message) => {
 
   const context = await Context.get(client, message)
 
+  // Process messages that mention the bot
   if (StringUtils.includes(message.body, NAMES)) {
-    const input = `${context.user.username}(${Env.BOT_NAME}):||${context.text}||\n`
+    try {
+      const input = `${context.user.username} pergunta: ${context.text}`
 
-    await client.startTyping(message.from, 4000)
+      await client.startTyping(message.from, 4000)
 
-    const response = await AI.complete(input, context.user.username)
+      // Initialize factory and get Gemini provider
+      await AIProviderFactory.initialize()
+      const provider = await AIProviderFactory.getDefaultTextProvider()
+      
+      const response = await provider.generateText(input, {
+        temperature: 0.8,
+        maxTokens: 512
+      })
 
-    // @ts-ignore
-    if (response.choices.length === 0 || !response.choices[0].text) return
+      const history = History.build(input, response.content, context.user.username)
+      History.write(history)
 
-    // @ts-ignore
-    const choices = response.choices
-    const random = Math.floor(Math.random() * choices.length)
-    const output = choices[random].text
-
-    const history = History.build(input, output, context.user.username)
-    History.write(history)
-
-    return client.sendText(message.from, output, { quotedMsg: message.id })
+      return client.sendText(message.from, response.content, { quotedMsg: message.id })
+    } catch (error) {
+      Logger.error(`AI chat middleware error: ${error}`)
+    }
   }
 
-  // check if the message is a reply
+  // Check if the message is a reply to the bot
   if (message.quotedMsgId) {
     const quotedMessage = await client.getMessageById(message.quotedMsgId)
     const WID = await client.getWid()
 
+    // @ts-ignore
     if (quotedMessage.sender.id._serialized === WID) {
-      const input = `${context.user.username}(${Env.BOT_NAME}):||${context.text}||\n`
+      try {
+        const input = `${context.user.username} pergunta: ${context.text}`
 
-      await client.startTyping(message.from, 2000)
+        await client.startTyping(message.from, 2000)
 
-      const response = await AI.complete(input, context.user.username)
+        // Initialize factory and get Gemini provider
+        await AIProviderFactory.initialize()
+        const provider = await AIProviderFactory.getDefaultTextProvider()
+        
+        const response = await provider.generateText(input, {
+          temperature: 0.8,
+          maxTokens: 512
+        })
 
-      // @ts-ignore
-      if (response.choices.length === 0 || !response.choices[0].text) return
-      // @ts-ignore
-      const choices = response.choices
-      const random = Math.floor(Math.random() * choices.length)
-      const output = choices[random].text
+        const history = History.buildReply(input, response.content, context.user.username)
+        History.write(history)
 
-      const history = History.buildReply(input, output, context.user.username)
-      History.write(history)
-
-      return client.sendText(message.from, output, { quotedMsg: message.id })
+        return client.sendText(message.from, response.content, { quotedMsg: message.id })
+      } catch (error) {
+        Logger.error(`AI chat reply error: ${error}`)
+      }
     }
   }
 }

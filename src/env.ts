@@ -7,15 +7,25 @@ export const Env = cleanEnv(process.env, {
   BOT_NAME: str({ desc: 'Bot Name', example: 'AI' }),
   BOT_NAMES: str({ desc: 'Bot Names', example: '["AI", "Bot"]' }),
   PREFIXES: str({ desc: 'Command Prefixes', example: '["!", "/", "$"]' }),
-  OPENAI_TOKEN: str({
-    desc: 'OpenAI API Token',
-    example: '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',
-    docs: 'https://beta.openai.com/docs/api-reference/authentication',
+  GEMINI_API_KEY: str({
+    desc: 'Google Gemini API Key',
+    example: 'AIzaSy...',
+    docs: 'https://ai.google.dev/gemini-api/docs',
   }),
-  REPLICATE_API_TOKEN: str({
-    desc: 'Replicate API Token',
-    example: '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',
-    docs: 'https://www.replicate.ai/docs/api/',
+  NVIDIA_API_KEY: str({
+    desc: 'NVIDIA NIM API Key',
+    example: 'nvapi-...',
+    docs: 'https://build.nvidia.com/',
+  }),
+  DEFAULT_TEXT_PROVIDER: str({
+    desc: 'Default AI provider for text generation',
+    default: 'gemini',
+    choices: ['gemini', 'nvidia'],
+  }),
+  DEFAULT_IMAGE_PROVIDER: str({
+    desc: 'Default AI provider for image generation',
+    default: 'nvidia',
+    choices: ['nvidia', 'gemini'],
   }),
 })
 

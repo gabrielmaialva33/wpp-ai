@@ -61,31 +61,86 @@
 
 The following software must be installed:
 
-- **[Node.js](https://nodejs.org/en/)**
+- **[Node.js v22.13.1+](https://nodejs.org/en/)**
 - **[Git](https://git-scm.com/)**
-- **[NPM](https://www.npmjs.com/)** or **[Yarn](https://yarnpkg.com/)**
+- **[PNPM](https://pnpm.io/)** (recommended) or **[NPM](https://www.npmjs.com/)**
 
 <br>
 
 ### :arrow_down: **Cloning the repository**
 
 ```sh
-  $ git clone https://github.com/gabrielmaialva33/wpp-ai.git
+$ git clone https://github.com/gabrielmaialva33/wpp-ai.git
+```
+
+<br>
+
+### :gear: **Configuration**
+
+1. Copy the environment file:
+```sh
+$ cp .env.example .env
+```
+
+2. Configure your API keys in `.env`:
+```env
+# Required Keys
+WPP_SESSION=wpp_ai
+BOT_NAME=AI
+BOT_NAMES='["AI", "Bot", "Assistant"]'
+PREFIXES='["!", "/", "$"]'
+
+# AI Provider Keys
+GEMINI_API_KEY=your-gemini-key
+NVIDIA_API_KEY=your-nvidia-key
+
+# Defaults
+DEFAULT_TEXT_PROVIDER=gemini
+DEFAULT_IMAGE_PROVIDER=nvidia
 ```
 
 <br>
 
 ### :arrow_forward: **Running the application**
 
-- :package: API
-
 ```sh
-  $ cd wpp-ai
-  # Dependencies install.
-  $ yarn # or npm install
-  # start
-  $ yarn watch:dev # or yarn watch:server
+$ cd wpp-ai
+# Install dependencies
+$ pnpm install
+
+# Development mode
+$ pnpm start:dev
+
+# Build and run production
+$ pnpm build
+$ pnpm start
 ```
+
+<br>
+
+## :robot: **Available Commands**
+
+### AI Commands
+- `!ai [provider] <question>` - Chat with AI (Gemini or NVIDIA)
+- `!compare <question>` - Compare responses from Gemini and NVIDIA
+- `!image <description>` - Generate images with NVIDIA
+
+### Examples
+```
+!ai gemini What is artificial intelligence?
+!ai nvidia Explain quantum computing
+!compare What's the meaning of life?
+!image a futuristic city at sunset
+!image cute robot playing guitar
+```
+
+### Supported Providers
+**Text Generation:**
+- Google Gemini (gemini-2.5-pro, gemini-2.5-flash)
+- NVIDIA NIM (Llama 3.3, DeepSeek R1, Mixtral)
+
+**Image Generation:**
+- NVIDIA (Stable Diffusion XL)
 
 <br>
 
