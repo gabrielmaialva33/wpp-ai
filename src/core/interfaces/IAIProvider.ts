@@ -32,6 +32,22 @@ export interface AIResponse {
   }
 }
 
+export interface AIVideoOptions {
+  model?: string
+  seed?: number
+  cfgScale?: number
+  /** Base image width/height enforced pela API (ex: 1024x576). */
+  width?: number
+  height?: number
+}
+
+export interface AIVideoResponse {
+  base64: string // mp4 base64
+  model: string
+  seed?: number
+  cost?: number
+}
+
 export interface AIImageResponse {
   images: Array<{
     url?: string
@@ -50,11 +66,19 @@ export interface IAIProvider {
     image: boolean
     embedding: boolean
     functionCalling: boolean
+    video?: boolean
+    vision?: boolean
   }
 
   generateText(prompt: string, options?: AIGenerationOptions): Promise<AIResponse>
   generateImage?(prompt: string, options?: AIImageOptions): Promise<AIImageResponse>
   generateEmbedding?(text: string): Promise<number[]>
+  generateVideo?(
+    imageBase64: string,
+    prompt?: string,
+    options?: AIVideoOptions
+  ): Promise<AIVideoResponse>
+  analyzeImage?(params: { imageBase64: string; prompt?: string }): Promise<AIResponse>
   estimateCost?(tokens: number, type: 'input' | 'output'): number
   checkAvailability(): Promise<boolean>
 }

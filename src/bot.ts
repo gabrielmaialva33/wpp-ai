@@ -64,6 +64,15 @@ export const Bot = async () => {
   create({
     session: Env.WPP_SESSION,
     disableWelcome: true,
+    puppeteerOptions: {
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-blink-features=TrustedDOMTypes',
+        '--disable-web-security',
+        '--disable-features=IsolateOrigins,site-per-process',
+      ],
+    },
   }).then((client) => start(client))
 }
 

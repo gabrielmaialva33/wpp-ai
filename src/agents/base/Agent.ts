@@ -44,7 +44,7 @@ export abstract class BaseAgent implements IAgent {
     this.personality = config.personality
     this.capabilities = config.capabilities
     this.modelConfig = config.modelConfig
-    
+
     // Initialize memory
     this.memory = {
       shortTerm: new Map(),
@@ -132,7 +132,7 @@ export abstract class BaseAgent implements IAgent {
     // Check if agent should naturally join conversation
     const keywords = this.getKeywords()
     const messageText = context.messages[context.messages.length - 1]?.body || ''
-    
+
     // Check for keywords
     for (const keyword of keywords) {
       if (messageText.toLowerCase().includes(keyword.toLowerCase())) {
@@ -153,8 +153,8 @@ export abstract class BaseAgent implements IAgent {
     const baseTime = 1000 // 1 second minimum
     const charTime = 20 // 20ms per character
     const thinkingTime = this.personality.traits.verbosity * 2000 // More verbose = more thinking
-    
-    return Math.min(baseTime + (responseLength * charTime) + thinkingTime, 10000) // Max 10 seconds
+
+    return Math.min(baseTime + responseLength * charTime + thinkingTime, 10000) // Max 10 seconds
   }
 
   formatResponse(content: string, _context: ConversationContext): string {
@@ -168,9 +168,10 @@ export abstract class BaseAgent implements IAgent {
 
     // Add catchphrase occasionally
     if (Math.random() < 0.2) {
-      const catchphrase = this.personality.catchPhrases[
-        Math.floor(Math.random() * this.personality.catchPhrases.length)
-      ]
+      const catchphrase =
+        this.personality.catchPhrases[
+          Math.floor(Math.random() * this.personality.catchPhrases.length)
+        ]
       formatted = `${formatted}\n\n${catchphrase}`
     }
 
@@ -239,7 +240,10 @@ Current context:
 - Participants: ${context.participants.join(', ')}
 
 Recent messages:
-${context.messages.slice(-5).map(m => `${m.sender.pushname}: ${m.body}`).join('\n')}
+${context.messages
+  .slice(-5)
+  .map((m) => `${m.sender.pushname}: ${m.body}`)
+  .join('\n')}
 
 User message: ${message}
 

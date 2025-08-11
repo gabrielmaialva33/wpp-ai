@@ -49,9 +49,22 @@ export class ResearchAgent extends BaseAgent {
   async canHandle(message: string, _context: ConversationContext): Promise<number> {
     const lower = message.toLowerCase()
     const researchKeywords = [
-      'search', 'find', 'research', 'look up', 'what is', 'who is', 
-      'when', 'where', 'information', 'fact', 'check', 'verify',
-      'news', 'latest', 'update', 'source'
+      'search',
+      'find',
+      'research',
+      'look up',
+      'what is',
+      'who is',
+      'when',
+      'where',
+      'information',
+      'fact',
+      'check',
+      'verify',
+      'news',
+      'latest',
+      'update',
+      'source',
     ]
 
     let confidence = 0
@@ -73,10 +86,10 @@ export class ResearchAgent extends BaseAgent {
     try {
       // Simulate research process with reactions
       const searchQuery = this.extractSearchQuery(message, context)
-      
+
       // Perform research
       const provider = AIProviderFactory.getProvider(this.modelConfig.provider)
-      
+
       const prompt = `You are Sherlock, a research specialist. 
       
 Research this query: "${searchQuery}"
@@ -146,7 +159,7 @@ Be thorough but concise. Use your detective personality.`
   private formatResearchResults(content: string, query: string): string {
     const header = `🔍 **Research Results for:** "${query}"\n`
     const divider = '─'.repeat(40)
-    
+
     // Add research indicators
     const sections = [
       header,
@@ -165,8 +178,18 @@ Be thorough but concise. Use your detective personality.`
 
   protected getKeywords(): string[] {
     return [
-      'search', 'find', 'research', 'look', 'what', 'who', 
-      'when', 'where', 'fact', 'check', 'verify', 'information'
+      'search',
+      'find',
+      'research',
+      'look',
+      'what',
+      'who',
+      'when',
+      'where',
+      'fact',
+      'check',
+      'verify',
+      'information',
     ]
   }
 }

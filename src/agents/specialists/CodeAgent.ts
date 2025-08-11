@@ -20,9 +20,9 @@ export class CodeAgent extends BaseAgent {
           empathy: 0.4,
         },
         catchPhrases: [
-          'Let\'s debug this together!',
+          "Let's debug this together!",
           'Code is poetry in motion.',
-          'There\'s always a solution in the stack.',
+          "There's always a solution in the stack.",
           'Time to compile some magic!',
         ],
         specialties: ['programming', 'debugging', 'code review', 'technical documentation'],
@@ -49,10 +49,33 @@ export class CodeAgent extends BaseAgent {
   async canHandle(message: string, _context: ConversationContext): Promise<number> {
     const lower = message.toLowerCase()
     const codeKeywords = [
-      'code', 'program', 'function', 'class', 'debug', 'error', 'bug',
-      'javascript', 'python', 'typescript', 'java', 'c++', 'html', 'css',
-      'api', 'database', 'algorithm', 'script', 'compile', 'syntax',
-      'variable', 'loop', 'array', 'object', 'method', 'import', 'export'
+      'code',
+      'program',
+      'function',
+      'class',
+      'debug',
+      'error',
+      'bug',
+      'javascript',
+      'python',
+      'typescript',
+      'java',
+      'c++',
+      'html',
+      'css',
+      'api',
+      'database',
+      'algorithm',
+      'script',
+      'compile',
+      'syntax',
+      'variable',
+      'loop',
+      'array',
+      'object',
+      'method',
+      'import',
+      'export',
     ]
 
     let confidence = 0
@@ -73,7 +96,7 @@ export class CodeAgent extends BaseAgent {
   async process(message: string, _context: ConversationContext): Promise<AgentResponse> {
     try {
       const provider = AIProviderFactory.getProvider(this.modelConfig.provider)
-      
+
       const prompt = `You are Dev, a programming expert with a friendly, helpful personality.
 
 Task: ${message}
@@ -128,7 +151,7 @@ Be precise but friendly. Add helpful comments in the code.`
   private formatCodeResponse(content: string): string {
     const header = `💻 **Code Solution**\n`
     const divider = '─'.repeat(40)
-    
+
     // Add code quality indicators
     let formatted = header + divider + '\n\n' + content
 
@@ -142,8 +165,17 @@ Be precise but friendly. Add helpful comments in the code.`
 
   protected getKeywords(): string[] {
     return [
-      'code', 'program', 'function', 'debug', 'error', 'script',
-      'javascript', 'python', 'typescript', 'api', 'algorithm'
+      'code',
+      'program',
+      'function',
+      'debug',
+      'error',
+      'script',
+      'javascript',
+      'python',
+      'typescript',
+      'api',
+      'algorithm',
     ]
   }
 }

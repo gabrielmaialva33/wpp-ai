@@ -49,10 +49,33 @@ export class MathAgent extends BaseAgent {
   async canHandle(message: string, _context: ConversationContext): Promise<number> {
     const lower = message.toLowerCase()
     const mathKeywords = [
-      'calculate', 'solve', 'equation', 'math', 'algebra', 'geometry',
-      'calculus', 'statistics', 'probability', 'integral', 'derivative',
-      'sum', 'average', 'mean', 'median', 'percentage', 'formula',
-      '+', '-', '*', '/', '=', '^', '√', '∫', '∑', 'π'
+      'calculate',
+      'solve',
+      'equation',
+      'math',
+      'algebra',
+      'geometry',
+      'calculus',
+      'statistics',
+      'probability',
+      'integral',
+      'derivative',
+      'sum',
+      'average',
+      'mean',
+      'median',
+      'percentage',
+      'formula',
+      '+',
+      '-',
+      '*',
+      '/',
+      '=',
+      '^',
+      '√',
+      '∫',
+      '∑',
+      'π',
     ]
 
     let confidence = 0
@@ -65,7 +88,7 @@ export class MathAgent extends BaseAgent {
     // Check for numbers and mathematical expressions
     const hasNumbers = /\d+/.test(message)
     const hasMathSymbols = /[+\-*/=^()]/.test(message)
-    
+
     if (hasNumbers && hasMathSymbols) {
       confidence += 0.5
     }
@@ -76,7 +99,7 @@ export class MathAgent extends BaseAgent {
   async process(message: string, _context: ConversationContext): Promise<AgentResponse> {
     try {
       const provider = AIProviderFactory.getProvider(this.modelConfig.provider)
-      
+
       const prompt = `You are Newton, a mathematics expert who loves precision and clarity.
 
 Problem: ${message}
@@ -132,20 +155,22 @@ Show your work methodically and precisely.`
   private formatMathResponse(content: string): string {
     const header = `🔢 **Mathematical Solution**\n`
     const divider = '═'.repeat(40)
-    
+
     // Format the response with clear sections
     let formatted = header + divider + '\n\n'
-    
+
     // Add step indicators if not present
     if (!content.includes('Step')) {
       const lines = content.split('\n')
       let stepCount = 1
-      formatted += lines.map(line => {
-        if (line.trim() && !line.startsWith('#')) {
-          return `**Step ${stepCount++}:** ${line}`
-        }
-        return line
-      }).join('\n')
+      formatted += lines
+        .map((line) => {
+          if (line.trim() && !line.startsWith('#')) {
+            return `**Step ${stepCount++}:** ${line}`
+          }
+          return line
+        })
+        .join('\n')
     } else {
       formatted += content
     }
@@ -157,8 +182,16 @@ Show your work methodically and precisely.`
 
   protected getKeywords(): string[] {
     return [
-      'calculate', 'solve', 'equation', 'math', 'number',
-      'sum', 'average', 'percentage', 'formula', 'integral'
+      'calculate',
+      'solve',
+      'equation',
+      'math',
+      'number',
+      'sum',
+      'average',
+      'percentage',
+      'formula',
+      'integral',
     ]
   }
 }

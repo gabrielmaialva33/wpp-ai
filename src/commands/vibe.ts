@@ -16,46 +16,71 @@ export const vibe: ICommand = {
     if (message.type !== MessageType.CHAT) return
 
     try {
-      // Get recent messages from the chat
-      const chat = await client.getChatById(message.from)
-      // @ts-ignore
-      const messages = await chat.fetchMessages({ limit: 50 })
-      
+      // Get recent messages from the chat using WPPConnect method
+      let messages: Message[] = []
+
+      try {
+        // Try to load messages from the chat
+        // @ts-ignore
+        messages = await client.getAllMessagesInChat(
+          message.from,
+          true, // includeMe - include bot's own messages
+          false // includeNotifications - exclude system notifications
+        )
+
+        // Limit to last 50 messages for performance
+        if (messages && messages.length > 50) {
+          messages = messages.slice(-50)
+        }
+      } catch (error) {
+        Logger.debug(`Failed to get messages with getAllMessagesInChat: ${error}`)
+
+        // Fallback: try alternative method
+        try {
+          // @ts-ignore
+          const chat = await client.getChatById(message.from)
+          // @ts-ignore
+          messages = chat.msgs?.models || []
+
+          // Convert to array and limit
+          if (messages && messages.length > 50) {
+            messages = messages.slice(-50)
+          }
+        } catch (fallbackError) {
+          Logger.error(`Failed to get messages: ${fallbackError}`)
+        }
+      }
+
       if (!messages || messages.length === 0) {
         await client.sendText(
           message.from,
-          '😅 Não consegui analisar o vibe... o grupo está muito quieto!',
+          '😅 Não consegui analisar o vibe... o grupo está muito quieto ou não consegui acessar as mensagens!',
           { quotedMsg: message.id }
         )
         return
       }
 
       // Analyze the vibe
-      await client.sendText(
-        message.from,
-        '🔮 Analisando o vibe do grupo...',
-        { quotedMsg: message.id }
-      )
+      await client.sendText(message.from, '🔮 Analisando o vibe do grupo...', {
+        quotedMsg: message.id,
+      })
 
       const vibeAnalysis = await analyzeGroupVibe(messages)
-      
+
       // Send vibe report with reactions
       const vibeReport = formatVibeReport(vibeAnalysis)
-      
+
       await client.sendText(message.from, vibeReport, { quotedMsg: message.id })
 
       // Add appropriate reaction based on vibe
       const vibeEmoji = getVibeEmoji(vibeAnalysis.overall)
       // @ts-ignore
       await client.sendReactionToMessage(message.id, vibeEmoji)
-
     } catch (error) {
       Logger.error(`Vibe command error: ${error}`)
-      await client.sendText(
-        message.from,
-        '❌ Não consegui sentir o vibe... tente novamente!',
-        { quotedMsg: message.id }
-      )
+      await client.sendText(message.from, '❌ Não consegui sentir o vibe... tente novamente!', {
+        quotedMsg: message.id,
+      })
     }
   },
 }
@@ -83,9 +108,9 @@ async function analyzeGroupVibe(messages: Message[]): Promise<VibeAnalysis> {
 
     // Extract message content for analysis
     const recentMessages = messages
-      .filter(m => m.body && m.type === MessageType.CHAT)
+      .filter((m) => m.body && m.type === MessageType.CHAT)
       .slice(0, 30)
-      .map(m => ({
+      .map((m) => ({
         sender: m.sender?.pushname || 'Unknown',
         text: m.body,
         timestamp: m.timestamp,
@@ -94,7 +119,7 @@ async function analyzeGroupVibe(messages: Message[]): Promise<VibeAnalysis> {
     const prompt = `Analyze the vibe/mood of this group chat based on recent messages.
 
 Messages:
-${recentMessages.map(m => `${m.sender}: ${m.text}`).join('\n')}
+${recentMessages.map((m) => `${m.sender}: ${m.text}`).join('\n')}
 
 Provide a JSON analysis with:
 {
@@ -122,16 +147,15 @@ Be fun and insightful in your analysis!`
     const jsonMatch = response.content.match(/\{[\s\S]*\}/)
     if (jsonMatch) {
       const analysis = JSON.parse(jsonMatch[0])
-      
+
       // Identify active and quiet users
       const userMessageCount = new Map<string, number>()
-      recentMessages.forEach(m => {
+      recentMessages.forEach((m) => {
         const count = userMessageCount.get(m.sender) || 0
         userMessageCount.set(m.sender, count + 1)
       })
 
-      const sortedUsers = Array.from(userMessageCount.entries())
-        .sort((a, b) => b[1] - a[1])
+      const sortedUsers = Array.from(userMessageCount.entries()).sort((a, b) => b[1] - a[1])
 
       analysis.activeUsers = sortedUsers.slice(0, 3).map(([user]) => user)
       analysis.quietUsers = sortedUsers.slice(-2).map(([user]) => user)
@@ -163,7 +187,7 @@ Be fun and insightful in your analysis!`
 function formatVibeReport(analysis: VibeAnalysis): string {
   const vibeEmoji = getVibeEmoji(analysis.overall)
   const energyBar = createEnergyBar(analysis.energy)
-  
+
   const emotionBars = Object.entries(analysis.emotions)
     .map(([emotion, value]) => {
       const emoji = getEmotionEmoji(emotion)
@@ -182,7 +206,7 @@ function formatVibeReport(analysis: VibeAnalysis): string {
 ${emotionBars}
 
 **Tópicos Quentes:** 
-${analysis.topics.map(t => `• ${t}`).join('\n')}
+${analysis.topics.map((t) => `• ${t}`).join('\n')}
 
 ${analysis.activeUsers.length > 0 ? `**Mais Ativos:** ${analysis.activeUsers.join(', ')}` : ''}
 ${analysis.quietUsers.length > 0 ? `**Mais Quietinhos:** ${analysis.quietUsers.join(', ')}` : ''}

@@ -23,7 +23,7 @@ export class OrchestratorAgent extends BaseAgent {
         },
         catchPhrases: [
           'Let me coordinate that for you!',
-          'I\'ll get the right expert on this.',
+          "I'll get the right expert on this.",
           'Teamwork makes the dream work!',
         ],
         specialties: ['task decomposition', 'agent coordination', 'response aggregation'],
@@ -54,7 +54,7 @@ export class OrchestratorAgent extends BaseAgent {
 
   async canHandle(message: string, context: ConversationContext): Promise<number> {
     // Orchestrator can handle any message that needs coordination
-    const needsCoordination = 
+    const needsCoordination =
       message.toLowerCase().includes('help') ||
       message.toLowerCase().includes('team') ||
       message.toLowerCase().includes('analyze') ||
@@ -70,7 +70,7 @@ export class OrchestratorAgent extends BaseAgent {
     try {
       // Analyze the task and determine which agents to involve
       const taskAnalysis = await this.analyzeTask(message, context)
-      
+
       // If single agent is sufficient
       if (taskAnalysis.agents.length === 1) {
         const agent = this.specialists.get(taskAnalysis.agents[0])
@@ -116,13 +116,16 @@ export class OrchestratorAgent extends BaseAgent {
     }
   }
 
-  private async analyzeTask(message: string, context: ConversationContext): Promise<{
+  private async analyzeTask(
+    message: string,
+    context: ConversationContext
+  ): Promise<{
     agents: string[]
     reasoning: string
     tasks: { agent: string; task: string }[]
   }> {
     const provider = AIProviderFactory.getProvider(this.modelConfig.provider)
-    
+
     const prompt = `Analyze this request and determine which specialist agents are needed.
 
 Available agents:
@@ -250,7 +253,7 @@ Return a JSON response with:
   ): string {
     const header = `🎯 **Team Response** (${taskAnalysis.agents.length} agents collaborated)\n`
     const divider = '─'.repeat(40)
-    
+
     return `${header}${divider}\n\n${aggregated.content}\n\n${divider}\n💡 *Coordination complete!*`
   }
 

@@ -23,10 +23,10 @@ export const execute = async (client: Whatsapp, message: Message) => {
       // Initialize factory and get Gemini provider
       await AIProviderFactory.initialize()
       const provider = await AIProviderFactory.getDefaultTextProvider()
-      
+
       const response = await provider.generateText(input, {
         temperature: 0.8,
-        maxTokens: 512
+        maxTokens: 512,
       })
 
       const history = History.build(input, response.content, context.user.username)
@@ -53,10 +53,10 @@ export const execute = async (client: Whatsapp, message: Message) => {
         // Initialize factory and get Gemini provider
         await AIProviderFactory.initialize()
         const provider = await AIProviderFactory.getDefaultTextProvider()
-        
+
         const response = await provider.generateText(input, {
           temperature: 0.8,
-          maxTokens: 512
+          maxTokens: 512,
         })
 
         const history = History.buildReply(input, response.content, context.user.username)

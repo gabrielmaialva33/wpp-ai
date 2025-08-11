@@ -100,31 +100,37 @@ src/
 The bot features a sophisticated multi-agent system where specialized AI agents collaborate to handle complex tasks:
 
 **Orchestrator (Maestro)** 🎯
+
 - Model: `nvidia/llama-3.3-nemotron-super-49b-v1`
 - Role: Coordinates all other agents, analyzes tasks, delegates work
 - Capabilities: Task decomposition, agent routing, response aggregation
 
 **Research Agent (Sherlock)** 🔍
+
 - Model: `nvidia/llama-3.1-nemotron-nano-8b-v1`
 - Role: Information gathering, fact-checking, web search
 - Specialties: Research, verification, data synthesis
 
 **Code Agent (Dev)** 💻
+
 - Model: `deepseek-ai/deepseek-r1`
 - Role: Programming, debugging, technical explanations
 - Specialties: Code generation, debugging, technical documentation
 
 **Math Agent (Newton)** 🔢
+
 - Model: `deepseek-ai/deepseek-r1`
 - Role: Mathematical calculations, statistics, proofs
 - Specialties: Equations, calculus, data analysis
 
 **Creative Agent (Artista)** 🎨
+
 - Model: `mistralai/mixtral-8x22b-instruct`
 - Role: Creative writing, storytelling, content generation
 - Specialties: Stories, poetry, creative content
 
 **Visual Agent (Picasso)** 🖼️
+
 - Model: `stabilityai/sdxl-turbo`
 - Role: Image generation, visual descriptions
 - Specialties: Art creation, illustrations, visual design
@@ -132,18 +138,21 @@ The bot features a sophisticated multi-agent system where specialized AI agents 
 ### Agent Features
 
 **Message Reactions**: Agents react to messages with emojis showing:
+
 - Processing states (🤔 thinking, ⚙️ working, 🔍 searching)
 - Emotions (😊 happy, 😢 sad, 🎉 excited)
 - Content type (💻 code, 🔢 math, 🎨 creative)
 - Quality indicators (✅ verified, ⚠️ warning, 🎯 success)
 
 **Natural Conversation Flow**: Agents can:
+
 - Join conversations naturally when relevant
 - Detect confusion and offer help
 - Remember context and past interactions
 - Adapt tone based on group dynamics
 
 **Collaboration Patterns**:
+
 - Sequential: Agents work one after another
 - Parallel: Multiple agents work simultaneously
 - Delegation: Agents can ask other agents for help

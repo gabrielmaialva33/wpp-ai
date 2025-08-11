@@ -66,11 +66,9 @@ export const image: ICommand = {
           ? AIProviderFactory.getProvider(providerName)
           : await AIProviderFactory.getDefaultImageProvider()
       } catch (error) {
-        await client.sendText(
-          message.from,
-          `❌ Nenhum provider de imagem disponível.`,
-          { quotedMsg: message.id }
-        )
+        await client.sendText(message.from, `❌ Nenhum provider de imagem disponível.`, {
+          quotedMsg: message.id,
+        })
         return
       }
 

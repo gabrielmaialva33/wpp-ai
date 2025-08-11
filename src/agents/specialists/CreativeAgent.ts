@@ -49,9 +49,26 @@ export class CreativeAgent extends BaseAgent {
   async canHandle(message: string, _context: ConversationContext): Promise<number> {
     const lower = message.toLowerCase()
     const creativeKeywords = [
-      'história', 'story', 'conto', 'poema', 'poem', 'criativo', 'creative',
-      'escreva', 'write', 'imagine', 'crie', 'create', 'invente',
-      'piada', 'joke', 'letra', 'música', 'song', 'roteiro', 'script'
+      'história',
+      'story',
+      'conto',
+      'poema',
+      'poem',
+      'criativo',
+      'creative',
+      'escreva',
+      'write',
+      'imagine',
+      'crie',
+      'create',
+      'invente',
+      'piada',
+      'joke',
+      'letra',
+      'música',
+      'song',
+      'roteiro',
+      'script',
     ]
 
     let confidence = 0
@@ -72,7 +89,7 @@ export class CreativeAgent extends BaseAgent {
   async process(message: string, _context: ConversationContext): Promise<AgentResponse> {
     try {
       const provider = AIProviderFactory.getProvider(this.modelConfig.provider)
-      
+
       const prompt = `You are Artista, a creative and imaginative content creator who loves storytelling.
       
 Your personality:
@@ -131,7 +148,7 @@ Response in Portuguese (Brazil) unless asked otherwise.`
   private formatCreativeResponse(content: string): string {
     const header = `🎨 **Criação Artística**\n`
     const divider = '✨'.repeat(20)
-    
+
     // Add creative formatting
     const formatted = `${header}${divider}\n\n${content}\n\n${divider}\n🌟 *Criado com amor e imaginação*`
 
@@ -140,8 +157,16 @@ Response in Portuguese (Brazil) unless asked otherwise.`
 
   protected getKeywords(): string[] {
     return [
-      'história', 'story', 'conto', 'poema', 'criativo',
-      'escreva', 'imagine', 'crie', 'piada', 'música'
+      'história',
+      'story',
+      'conto',
+      'poema',
+      'criativo',
+      'escreva',
+      'imagine',
+      'crie',
+      'piada',
+      'música',
     ]
   }
 }

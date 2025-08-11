@@ -53,14 +53,10 @@ export class AgentTeam {
     Logger.info('Agent Team initialized successfully')
   }
 
-  async processMessage(
-    client: Whatsapp,
-    message: Message,
-    directAgent?: string
-  ): Promise<void> {
+  async processMessage(client: Whatsapp, message: Message, directAgent?: string): Promise<void> {
     try {
       const context = await this.getOrCreateContext(message)
-      
+
       // Add reactions to show processing
       await this.addReaction(client, message, AGENT_REACTIONS.THINKING)
 
@@ -91,7 +87,6 @@ export class AgentTeam {
 
       // Update conversation context
       this.updateContext(message.from, message, response)
-
     } catch (error) {
       Logger.error(`AgentTeam error: ${error}`)
       await this.addReaction(client, message, AGENT_REACTIONS.ERROR)
@@ -105,7 +100,7 @@ export class AgentTeam {
 
   async shouldAgentsIntervene(message: Message): Promise<boolean> {
     const context = await this.getOrCreateContext(message)
-    
+
     // Check if any agent wants to naturally join the conversation
     for (const agent of this.agents.values()) {
       if (agent.shouldInterrupt(context)) {
@@ -115,7 +110,7 @@ export class AgentTeam {
 
     // Check for confusion or help requests
     const messageText = message.body?.toLowerCase() || ''
-    const needsHelp = 
+    const needsHelp =
       messageText.includes('?') ||
       messageText.includes('help') ||
       messageText.includes('ajuda') ||
@@ -125,12 +120,9 @@ export class AgentTeam {
     return needsHelp
   }
 
-  async addNaturalResponse(
-    client: Whatsapp,
-    message: Message
-  ): Promise<void> {
+  async addNaturalResponse(client: Whatsapp, message: Message): Promise<void> {
     const context = await this.getOrCreateContext(message)
-    
+
     // Find the most confident agent for natural response
     let bestAgent: BaseAgent | null = null
     let bestConfidence = 0
@@ -146,16 +138,16 @@ export class AgentTeam {
     if (bestAgent && bestConfidence > 0.5) {
       // Add thinking reaction
       await this.addReaction(client, message, AGENT_REACTIONS.THINKING_FACE)
-      
+
       // Natural delay (1-3 seconds)
-      await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000))
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000 + Math.random() * 2000))
+
       // Process with the best agent
       const response = await bestAgent.process(message.body || '', context)
-      
+
       // Format as natural intervention
       const naturalResponse = this.formatNaturalResponse(bestAgent, response.content)
-      
+
       await client.sendText(message.from, naturalResponse)
     }
   }
@@ -172,19 +164,15 @@ export class AgentTeam {
     return `${intro}\n\n${content}`
   }
 
-  private async addReaction(
-    client: Whatsapp,
-    message: Message,
-    reaction: string
-  ): Promise<void> {
+  private async addReaction(client: Whatsapp, message: Message, reaction: string): Promise<void> {
     try {
       // WhatsApp reaction API
       await (client as any).sendReactionToMessage(message.id, reaction)
-      
+
       // Track reaction internally
       ReactionManager.addReaction(message.id, {
         type: Object.keys(AGENT_REACTIONS).find(
-          key => AGENT_REACTIONS[key as keyof typeof AGENT_REACTIONS] === reaction
+          (key) => AGENT_REACTIONS[key as keyof typeof AGENT_REACTIONS] === reaction
         ) as any,
         agent: 'team',
         reason: 'Processing',
@@ -197,7 +185,7 @@ export class AgentTeam {
 
   private async getOrCreateContext(message: Message): Promise<ConversationContext> {
     const groupId = message.from
-    
+
     if (!this.activeConversations.has(groupId)) {
       this.activeConversations.set(groupId, {
         messages: [],
@@ -210,7 +198,7 @@ export class AgentTeam {
     }
 
     const context = this.activeConversations.get(groupId)!
-    
+
     // Update context with new message
     context.messages.push(message)
     if (context.messages.length > 20) {
@@ -232,11 +220,7 @@ export class AgentTeam {
     return context
   }
 
-  private updateContext(
-    groupId: string,
-    _message: Message,
-    response: AgentResponse
-  ): void {
+  private updateContext(groupId: string, _message: Message, response: AgentResponse): void {
     const context = this.activeConversations.get(groupId)
     if (context) {
       // Update mood based on response confidence
@@ -253,7 +237,7 @@ export class AgentTeam {
 
   private extractTopic(text: string): string {
     // Simple topic extraction
-    const words = text.split(' ').filter(w => w.length > 4)
+    const words = text.split(' ').filter((w) => w.length > 4)
     return words.slice(0, 3).join(' ')
   }
 
@@ -261,8 +245,8 @@ export class AgentTeam {
     const baseTime = 1000
     const perChar = 20
     const maxTime = 8000
-    
-    return Math.min(baseTime + (text.length * perChar), maxTime)
+
+    return Math.min(baseTime + text.length * perChar, maxTime)
   }
 
   // Public methods for command access

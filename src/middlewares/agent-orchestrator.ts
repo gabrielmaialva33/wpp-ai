@@ -23,7 +23,7 @@ export const execute = async (client: Whatsapp, message: Message) => {
       // Extract agent name if specified
       const agentPattern = /@\w+\s+(research|code|math|creative|visual|analyst|language)/i
       const agentMatch = message.body.match(agentPattern)
-      
+
       if (agentMatch) {
         const agentId = agentMatch[1].toLowerCase()
         await team.processMessage(client, message, agentId)
@@ -44,7 +44,7 @@ export const execute = async (client: Whatsapp, message: Message) => {
     if (message.quotedMsgId) {
       const quotedMessage = await client.getMessageById(message.quotedMsgId)
       const WID = await client.getWid()
-      
+
       // @ts-ignore
       if (quotedMessage.sender.id._serialized === WID) {
         await team.processMessage(client, message)

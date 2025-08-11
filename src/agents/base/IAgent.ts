@@ -82,16 +82,16 @@ export interface IAgent {
   canHandle(message: string, context: ConversationContext): Promise<number> // 0-1 confidence
   process(message: string, context: ConversationContext): Promise<AgentResponse>
   react(message: Message, context: ConversationContext): Promise<AgentReaction | null>
-  
+
   // Memory methods
   remember(key: string, value: any, persistent?: boolean): void
   recall(key: string): any
   forget(key: string): void
-  
+
   // Collaboration methods
   delegateTo(agentId: string, task: string): Promise<AgentResponse>
   consultWith(agentId: string, question: string): Promise<string>
-  
+
   // Conversation methods
   shouldInterrupt(context: ConversationContext): boolean
   getTypingDuration(responseLength: number): number

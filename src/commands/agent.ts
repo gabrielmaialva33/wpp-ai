@@ -54,7 +54,6 @@ export const agent: ICommand = {
 
       // Process with specific agent
       await team.processMessage(client, processMessage, agentId)
-
     } catch (error) {
       Logger.error(`Agent command error: ${error}`)
       await client.sendText(
@@ -69,7 +68,7 @@ export const agent: ICommand = {
 async function sendAgentHelp(client: Whatsapp, message: Message): Promise<void> {
   const team = AgentTeam.getInstance()
   const agents = team.getAgents()
-  
+
   const help = `🤖 **Como usar o comando agent**
 ━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -81,7 +80,7 @@ async function sendAgentHelp(client: Whatsapp, message: Message): Promise<void> 
 • !agent math resolva x² + 5x + 6 = 0
 
 **Agentes disponíveis:**
-${agents.map(a => `• \`${a.id}\` - ${a.personality.emoji} ${a.name}`).join('\n')}
+${agents.map((a) => `• \`${a.id}\` - ${a.personality.emoji} ${a.name}`).join('\n')}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━
 💡 Cada agente é especializado em diferentes tarefas!`
@@ -91,5 +90,5 @@ ${agents.map(a => `• \`${a.id}\` - ${a.personality.emoji} ${a.name}`).join('\n
 
 function getAvailableAgentsList(team: AgentTeam): string {
   const agents = team.getAgents()
-  return agents.map(a => `• ${a.id} - ${a.personality.emoji} ${a.name}`).join('\n')
+  return agents.map((a) => `• ${a.id} - ${a.personality.emoji} ${a.name}`).join('\n')
 }

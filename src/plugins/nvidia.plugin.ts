@@ -5,6 +5,8 @@ import {
   AIResponse,
   AIImageOptions,
   AIImageResponse,
+  AIVideoOptions,
+  AIVideoResponse,
 } from '../core/interfaces/IAIProvider.js'
 import { Env } from '../env.js'
 import { Logger } from '../utils/logger.js'
@@ -32,6 +34,8 @@ export class NvidiaProvider implements IAIProvider {
     image: true,
     embedding: true,
     functionCalling: true,
+    video: true,
+    vision: true,
   }
 
   private modelConfigs = {
@@ -201,6 +205,80 @@ export class NvidiaProvider implements IAIProvider {
       return data.data[0].embedding
     } catch (error) {
       Logger.error(`NVIDIA embedding error: ${error}`)
+      throw error
+    }
+  }
+
+  async generateVideo(
+    imageBase64: string,
+    _prompt?: string,
+    options?: AIVideoOptions
+  ): Promise<AIVideoResponse> {
+    try {
+      const modelEndpoint = '/genai/stabilityai/stable-video-diffusion'
+      const response = await fetch(`${this.baseUrl}${modelEndpoint}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          image: imageBase64, // deve vir no formato data:image/png;base64,<...>
+          seed: options?.seed || 0,
+          cfg_scale: options?.cfgScale || 1.8,
+        }),
+      })
+
+      if (!response.ok) {
+        const error = await response.text()
+        throw new Error(`NVIDIA Video API error: ${response.status} - ${error}`)
+      }
+
+      const data = (await response.json()) as any
+      if (!data.video) throw new Error('No video field in response')
+
+      return {
+        base64: data.video,
+        model: 'stabilityai/stable-video-diffusion',
+        seed: data.seed,
+      }
+    } catch (error) {
+      Logger.error(`NVIDIA video generation error: ${error}`)
+      throw error
+    }
+  }
+
+  async analyzeImage(params: { imageBase64: string; prompt?: string }): Promise<AIResponse> {
+    try {
+      // Usar microsoft/florence-2 para descrição / Q&A de imagem
+      const endpoint = '/vlm/microsoft/florence-2'
+      const prompt = params.prompt || 'Describe the image briefly in Portuguese.'
+      const messages = [
+        {
+          role: 'user',
+          content: `<img src="${params.imageBase64}" />\n${prompt}`,
+        },
+      ]
+      const response = await fetch(`${this.baseUrl}${endpoint}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ messages, max_tokens: 512 }),
+      })
+      if (!response.ok) {
+        const error = await response.text()
+        throw new Error(`NVIDIA Vision API error: ${response.status} - ${error}`)
+      }
+      const data = (await response.json()) as any
+      const content = data?.choices?.[0]?.message?.content || 'Sem descrição.'
+      return {
+        content,
+        model: 'microsoft/florence-2',
+      }
+    } catch (error) {
+      Logger.error(`NVIDIA vision analyze error: ${error}`)
       throw error
     }
   }

@@ -43,7 +43,6 @@ export const team: ICommand = {
 
       // Process with the team
       await team.processMessage(client, message)
-
     } catch (error) {
       Logger.error(`Team command error: ${error}`)
       await client.sendText(
@@ -57,7 +56,7 @@ export const team: ICommand = {
 
 async function sendTeamStatus(client: Whatsapp, message: Message, team: AgentTeam): Promise<void> {
   const agents = team.getAgents()
-  
+
   const status = `🤖 **Status da Equipe de Agentes**
 ━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -66,10 +65,13 @@ async function sendTeamStatus(client: Whatsapp, message: Message, team: AgentTea
 🎯 **Maestro** (Orchestrator)
    Coordena e distribui tarefas
 
-${agents.map(agent => 
-`${agent.personality.emoji} **${agent.name}** (${agent.id})
+${agents
+  .map(
+    (agent) =>
+      `${agent.personality.emoji} **${agent.name}** (${agent.id})
    ${agent.role}`
-).join('\n\n')}
+  )
+  .join('\n\n')}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━
 💡 Use: !team <tarefa> para ativar a equipe
@@ -80,26 +82,28 @@ ${agents.map(agent =>
 
 async function sendAgentList(client: Whatsapp, message: Message, team: AgentTeam): Promise<void> {
   const agents = team.getAgents()
-  
+
   const list = `📋 **Lista de Agentes Especializados**
 ━━━━━━━━━━━━━━━━━━━━━━━━
 
-${agents.map(agent => {
-  const capabilities = []
-  if (agent.capabilities.code) capabilities.push('💻 Código')
-  if (agent.capabilities.math) capabilities.push('🔢 Matemática')
-  if (agent.capabilities.research) capabilities.push('🔍 Pesquisa')
-  if (agent.capabilities.creative) capabilities.push('🎨 Criativo')
-  if (agent.capabilities.analysis) capabilities.push('📊 Análise')
-  if (agent.capabilities.translation) capabilities.push('🌐 Tradução')
-  
-  return `${agent.personality.emoji} **${agent.name}**
+${agents
+  .map((agent) => {
+    const capabilities = []
+    if (agent.capabilities.code) capabilities.push('💻 Código')
+    if (agent.capabilities.math) capabilities.push('🔢 Matemática')
+    if (agent.capabilities.research) capabilities.push('🔍 Pesquisa')
+    if (agent.capabilities.creative) capabilities.push('🎨 Criativo')
+    if (agent.capabilities.analysis) capabilities.push('📊 Análise')
+    if (agent.capabilities.translation) capabilities.push('🌐 Tradução')
+
+    return `${agent.personality.emoji} **${agent.name}**
 • ID: \`${agent.id}\`
 • Especialidades: ${capabilities.join(', ')}
 • Personalidade: ${Object.entries(agent.personality.traits)
-  .map(([key, value]) => `${key}: ${Math.round(value * 100)}%`)
-  .join(', ')}`
-}).join('\n\n')}
+      .map(([key, value]) => `${key}: ${Math.round(value * 100)}%`)
+      .join(', ')}`
+  })
+  .join('\n\n')}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━
 💡 Cada agente tem personalidade e habilidades únicas!`

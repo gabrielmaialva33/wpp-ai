@@ -26,3 +26,7 @@ yarn-error.log
 # Platform specific
 .DS_Store
 .claude
+
+data/bot.db
+data/bot.db-shm
+data/bot.db-wal
